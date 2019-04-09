@@ -1,5 +1,8 @@
-# InstiGo-Android ![InstiGo](https://user-images.githubusercontent.com/47269634/55819333-2a623c80-5b16-11e9-9e68-7383086d8b80.png)
+<img src="https://user-images.githubusercontent.com/47269634/55819333-2a623c80-5b16-11e9-9e68-7383086d8b80.png" align =right height='150'>
 
+
+
+# InstiGo-Android
 InstiGO is an android app for the students and faculties of IIT Dharwad that provide a one stop solution for matters related to mess, academia and hostel. 
 
 ## Libraries Used
