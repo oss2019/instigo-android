@@ -1,6 +1,4 @@
-<img src="https://user-images.githubusercontent.com/47269634/55819333-2a623c80-5b16-11e9-9e68-7383086d8b80.png" align="right" height='250'>
-
-# InstiGo-Android
+# InstiGo-Android ![InstiGo](https://user-images.githubusercontent.com/47269634/55819333-2a623c80-5b16-11e9-9e68-7383086d8b80.png)
 
 InstiGO is an android app for the students and faculties of IIT Dharwad that provide a one stop solution for matters related to mess, academia and hostel. 
 
@@ -15,7 +13,7 @@ InstiGO is an android app for the students and faculties of IIT Dharwad that pro
 
 ## Contributing
 
-Before contributing be sure to check out the [CONTRIBUTION](https://github.com/oss2019/OSS-Overview/blob/master/Contributing-Guidelines.md) guidelines.
+Before contributing be sure to check out the [CONTRIBUTION GUIDELINES](https://github.com/oss2019/OSS-Overview/blob/master/Contribution%20Guidelines.md) guidelines.
 
 We currently have a series of automated Unit and Integration tests. These can be run locally and are also run when submitting a pull request.
 
@@ -30,10 +28,10 @@ For writing commit messages please read the [COMMITSTYLE](https://github.com/oss
 Our other sources of communications include
 
 - Email: oss@iitdh.ac.in
-- POC : Sonu Sourav (sonusouravdx001@gmail.com)
+- POC : Sonu Sourav (sonusouravdx001@gmail.com)  
 For more information, please refer to [OSS Website](https://oss2019.github.io/).
 
 
 ## LEGAL & DISCLAIMER
 
-Please refer to [COPYING](https://github.com/oss2019/OSS-Overview/blob/master/LICENSE).
+Please refer to [LICENSE](https://github.com/oss2019/OSS-Overview/blob/master/LICENSE).
