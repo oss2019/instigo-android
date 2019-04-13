@@ -18,15 +18,15 @@ InstiGO is an android app for the students and faculties of IIT Dharwad that pro
 
 ## Contributing
 
-Before contributing be sure to check out the [CONTRIBUTION GUIDELINES](https://github.com/oss2019/OSS-Overview/blob/master/Contribution%20Guidelines.md) guidelines.
+Before contributing be sure to check out the [CONTRIBUTION GUIDELINES](https://github.com/oss2019/instigo-android/blob/master/Contribution-Guidelines.md) guidelines.
 
 We currently have a series of automated Unit and Integration tests. These can be run locally and are also run when submitting a pull request.
 
 ## Code Style
-For contributions please read the [CODESTYLE](https://github.com/oss2019/OSS-Overview/blob/master/Code%20Style.md) carefully. Pull requests that do not match the style will be rejected.
+For contributions please read the [CODESTYLE](https://github.com/oss2019/instigo-android/blob/master/Code-Style.md) carefully. Pull requests that do not match the style will be rejected.
 
 ## Commit Style
-For writing commit messages please read the [COMMITSTYLE](https://github.com/oss2019/OSS-Overview/blob/master/Commit%20Style.md) carefully. Kindly adhere to the guidelines. Pull requests not matching the style will be rejected.  
+For writing commit messages please read the [COMMITSTYLE](https://github.com/oss2019/instigo-android/blob/master/Commit-Style.md) carefully. Kindly adhere to the guidelines. Pull requests not matching the style will be rejected.  
 
 ## Communication
 
@@ -39,4 +39,4 @@ For more information, please refer to [OSS Website](https://oss2019.github.io/).
 
 ## LEGAL & DISCLAIMER
 
-Please refer to [LICENSE](https://github.com/oss2019/OSS-Overview/blob/master/LICENSE).
+Please refer to [LICENSE](https://github.com/oss2019/instigo-android/blob/master/LICENSE.md).
