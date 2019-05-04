@@ -1,12 +1,14 @@
 <img src="https://user-images.githubusercontent.com/47269634/55819333-2a623c80-5b16-11e9-9e68-7383086d8b80.png" align =right height='150'>
 
 
-[![Issues](https://img.shields.io/github/issues-raw/oss2019/instigo-android.svg?color=red)](https://github.com/oss2019/instigo-android/issues) [![Pull Requests](https://img.shields.io/github/issues-pr/oss2019/instigo-android.svg?color=yellow)](https://github.com/oss2019/instigo-android/pulls) [![License](https://img.shields.io/github/license/oss2019/instigo-android.svg?logoColor=red)](https://github.com/oss2019/instigo-android/blob/master/LICENSE.md) [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/oss2019/community)
+[![Issues](https://img.shields.io/github/issues-raw/oss2019/instigo-android.svg?color=red)](https://github.com/oss2019/instigo-android/issues) [![Pull Requests](https://img.shields.io/github/issues-pr/oss2019/instigo-android.svg?color=yellow)](https://github.com/oss2019/instigo-android/pulls) [![License](https://img.shields.io/github/license/oss2019/instigo-android.svg?logoColor=red)](https://github.com/oss2019/instigo-android/blob/master/LICENSE.md) [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/oss2019/instigo-android)
 
 
 # InstiGo-Android
 InstiGO is an android app for the students and faculties of IIT Dharwad that provide a one stop solution for matters related to mess, academia and hostel. 
 
+## InstiGo apk
+[![button](https://user-images.githubusercontent.com/34706326/57173102-c64a4400-6e47-11e9-8bdd-c44c9efbdeb4.jpg)](https://drive.google.com/open?id=1iE_qPeSnJFIYzzZZOspIjTET86psqJeR)
 ## Libraries Used
 
 - [Firebase](https://github.com/firebase/quickstart-android) - Firebase is Google's mobile platform that helps you quickly develop high-quality apps
