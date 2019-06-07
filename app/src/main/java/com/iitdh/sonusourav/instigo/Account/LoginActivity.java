@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -302,7 +303,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //if the requestCode is the Google Sign In code that we defined at starting
         if (requestCode == RC_SIGN_IN) {
-            if(resultCode==RESULT_OK){
 
                 //Getting the GoogleSignIn Task
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -315,9 +315,14 @@ public class LoginActivity extends AppCompatActivity {
                         firebaseAuthWithGoogle(account);
                     }
                 } catch (ApiException e) {
-                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    if (e.getStatusCode() == GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
+                        // cancelled
+                        hideProgressDialog();
+                    } else {
+                        // error
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
 
         }

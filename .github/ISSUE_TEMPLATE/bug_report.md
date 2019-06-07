@@ -26,7 +26,6 @@ If applicable, add screenshots/gif to help explain your problem.
 **Smartphone (please complete the following information):**
  - Device: [e.g. Redmi 4]
  - OS: [e.g. Android Lollipop]
- - Version [e.g. 22]
 
 **Additional context**
 Add any other context about the problem here.
