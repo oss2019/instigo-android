@@ -2,6 +2,7 @@ package com.iitdh.sonusourav.instigo.Utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.iitdh.sonusourav.instigo.Council.CouncilActivity;
@@ -83,13 +91,29 @@ public class CommonFunctions {
                 PreferenceManager preferenceManager=new PreferenceManager(activity.getApplicationContext());
                 preferenceManager.setIsLoggedIn(false);
                 preferenceManager.setLoginCredentials("email","password");
+
                 FirebaseAuth loginAuth=FirebaseAuth.getInstance();
                 loginAuth.signOut();
 
-                Toast.makeText(activity.getApplicationContext(), "User successfully logged out.", Toast.LENGTH_SHORT).show();
-                activity.startActivity(new Intent().setClass(activity, LoginActivity.class));
-                break;
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(activity.getResources().getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
+                GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(activity, gso);
 
+                googleSignInClient.signOut().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(activity.getApplicationContext(), "User successfully logged out.", Toast.LENGTH_SHORT).show();
+                        activity.startActivity(new Intent().setClass(activity, LoginActivity.class));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(activity.getApplicationContext(), "Cannot Log Out, Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
             }
 
             case R.id.nav_feedback: {
