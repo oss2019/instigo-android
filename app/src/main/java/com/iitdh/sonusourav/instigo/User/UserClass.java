@@ -32,11 +32,11 @@ public class UserClass {
         coverPic="";
 
     }
-    public UserClass(String userEmail) {
+    public UserClass(String userEmail, String userName) {
 
         email = userEmail;
         pass = "fa31b7bcb9e0d9ad4ab7e94e0230f2af7";
-        name = "";
+        name = userName;
         phone = "";
         gender = "";
         branch="";
