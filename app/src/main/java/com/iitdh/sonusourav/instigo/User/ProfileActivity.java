@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity
 
     FirebaseStorage storage;
     StorageReference storageReference;
+    private FirebaseUser profileUser;
     private DatabaseReference profileUserRef;
     private StorageReference ref;
     private Uri filePath;
@@ -174,7 +177,7 @@ public class ProfileActivity extends AppCompatActivity
         profileCoverPic=findViewById(R.id.profile_cover_pic);
 
         FirebaseAuth profileAuth = FirebaseAuth.getInstance();
-        FirebaseUser profileUser = profileAuth.getCurrentUser();
+        profileUser = profileAuth.getCurrentUser();
         FirebaseDatabase profileInstance = FirebaseDatabase.getInstance();
         DatabaseReference profileRootRef = profileInstance.getReference().child("Users");
         assert profileUser != null;
@@ -341,13 +344,17 @@ public class ProfileActivity extends AppCompatActivity
 
                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void onSuccess(Uri uri) {
+                                public void onSuccess(final Uri uri) {
                                     Log.d("Pic Url Fetching","success");
 
                                     if(code==70){
                                         profileUserRef.child("profilePic").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
+                                                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                                                        .setPhotoUri(uri)
+                                                        .build();
+                                                profileUser.updateProfile(request);
                                                 Log.d("Pic Url Uploading","success");
 
                                             }

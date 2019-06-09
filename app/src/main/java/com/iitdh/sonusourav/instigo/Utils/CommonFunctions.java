@@ -2,17 +2,25 @@ package com.iitdh.sonusourav.instigo.Utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -148,15 +156,46 @@ public class CommonFunctions {
 
             emailTextView.setText(firebaseUser.getEmail());
             usernameTextView.setText(firebaseUser.getDisplayName());
-            Glide.with(activity.getApplicationContext())
-                    .load(firebaseUser.getPhotoUrl())
-                    .into(userImage);
-            Log.d("Nav_Image","Reached");
 
+            Uri photoUri = firebaseUser.getPhotoUrl();
+            if(photoUri == null){
+                String userName = firebaseUser.getDisplayName();
+                char ch;
+                if(userName != null) {
+                    ch = userName.charAt(0);
+                    TextDrawable drawable = TextDrawable.builder()
+                            .buildRound(String.valueOf(ch), Color.BLUE);
+                    Bitmap bitmap = drawableToBitmap(drawable);
+                    Glide.with(activity.getApplicationContext())
+                            .load(bitmap)
+                            .into(userImage);
+                }
+            }
+            else{
+                Glide.with(activity.getApplicationContext())
+                        .load(photoUri)
+                        .into(userImage);
+            }
         }
     }
 
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
 
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : 96;
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : 96;
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
+}
 
 
