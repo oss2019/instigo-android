@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iitdh.sonusourav.instigo.R;
@@ -91,6 +92,10 @@ public class RegisterActivity extends AppCompatActivity {
                             regisPref.setIsPassUpdated(true);
                             regisPref.setIsFirstGoogleLogin(false);
                             sendEmailVerification();
+                            UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(signUpUsername)
+                                    .build();
+                            firebaseUser.updateProfile(request);
 
                         }
                         if (!task.isSuccessful()) {
@@ -123,7 +128,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.makeText(RegisterActivity.this, "The user account has been disabled by an administrator.", Toast.LENGTH_LONG).show();
                                     break;
 
-
                                 case "ERROR_OPERATION_NOT_ALLOWED":
                                     Toast.makeText(RegisterActivity.this, "This operation is not allowed. You must enable this service in the console.", Toast.LENGTH_LONG).show();
                                     break;
@@ -133,17 +137,11 @@ public class RegisterActivity extends AppCompatActivity {
                                     registerPass.setError("The password is invalid it must 6 characters at least");
                                     registerPass.requestFocus();
                                     break;
-
                             }
                         }
                     }
-
-
-
                 });
-
             }
-
         });
 
         loginHere.setOnClickListener(new View.OnClickListener() {
@@ -198,16 +196,16 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
-        String[] split = signUpEmail.split("@");
-        String domain = split[1]; //This Will Give You The Domain After '@'
-        if(!domain.equalsIgnoreCase("iitdh.ac.in"))
-        {
-
-            Toast.makeText(RegisterActivity.this, "Register only with IITDh account", Toast.LENGTH_SHORT).show();
-            loginHere.setFocusable(true);
-            loginHere.setClickable(true);
-            return false;
-        }
+//        String[] split = signUpEmail.split("@");
+//        String domain = split[1]; //This Will Give You The Domain After '@'
+//        if(!domain.equalsIgnoreCase("iitdh.ac.in"))
+//        {
+//
+//            Toast.makeText(RegisterActivity.this, "Register only with IITDh account", Toast.LENGTH_SHORT).show();
+//            loginHere.setFocusable(true);
+//            loginHere.setClickable(true);
+//            return false;
+//        }
 
         return true;
 

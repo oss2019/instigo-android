@@ -348,15 +348,19 @@ public class LoginActivity extends AppCompatActivity {
                             assert user != null;
                             String email = user.getEmail();
                             assert email != null;
-                            String[] split = email.split("@");
-                            String domain = split[1]; //This Will Give You The Domain After '@'
 
-                                if(loginPref.isFirstGoogleLogin()){
+                            boolean isNewUser;
+                            if(task.getResult() != null)
+                                isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                            else
+                                isNewUser = true;
+
+                                if(isNewUser){
 
                                     Log.d("FirstGoogleLogin","Reaching");
                                     loginPref.setIsFirstGoogleLogin(false);
                                     userRef = rootRef.getRef().child("Users").child(encodeUserEmail(user.getEmail())).getRef();
-                                    userRef.setValue(new UserClass(user.getEmail())).addOnFailureListener(new OnFailureListener() {
+                                    userRef.setValue(new UserClass(user.getEmail(), user.getDisplayName())).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             Toast.makeText(LoginActivity.this, " Account failed .\n Try again.", Toast.LENGTH_SHORT).show();
