@@ -196,6 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
+
 //        String[] split = signUpEmail.split("@");
 //        String domain = split[1]; //This Will Give You The Domain After '@'
 //        if(!domain.equalsIgnoreCase("iitdh.ac.in"))
