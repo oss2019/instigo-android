@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -65,6 +66,7 @@ public class EditInfoActivity extends AppCompatActivity {
     private  AdapterView.OnItemSelectedListener spinnerListener;
 
     private DatabaseReference infoUserRef;
+    private FirebaseUser firebaseUser;
 
     String proName;
     String proBranch;
@@ -81,6 +83,7 @@ public class EditInfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_info);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         editInfoInit();
 
@@ -412,7 +415,10 @@ public class EditInfoActivity extends AppCompatActivity {
         infoUserRef.updateChildren(taskMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
+                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(proName)
+                        .build();
+                firebaseUser.updateProfile(request);
                 hideProgressDialog();
                 Toast.makeText(getApplicationContext(),"Profile successfully updated",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(EditInfoActivity.this,ProfileActivity.class));
