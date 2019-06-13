@@ -33,8 +33,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.iitdh.sonusourav.instigo.HomeActivity;
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.User.UserClass;
@@ -272,7 +276,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             String testEmail=loginPref.getPrefEmail();
             Log.d("LoginEmail",testEmail);
-            Toast.makeText(getApplicationContext(),"Signed In successfully",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, " Signed In as " + firebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
             Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
             startActivity(intent);
             hideProgressDialog();
@@ -382,11 +386,31 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                 }else {
-                                    Toast.makeText(LoginActivity.this, " Signed In as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                    hideProgressDialog();
-                                    finish();
+                                    userRef = rootRef.child("Users").child(encodeUserEmail(user.getEmail())).child("name");
+                                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            String name = (String) dataSnapshot.getValue();
+                                            UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                                                    .setDisplayName(name)
+                                                    .build();
+                                            user.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Toast.makeText(LoginActivity.this, " Signed In as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                                    hideProgressDialog();
+                                                    finish();
+                                                }
+                                            });
 
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
 
                         } else {

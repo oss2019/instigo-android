@@ -186,7 +186,6 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
-
         if (signUpPass.length() < 6) {
             Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
             registerPass.requestFocus();
@@ -194,8 +193,6 @@ public class RegisterActivity extends AppCompatActivity {
             loginHere.setClickable(true);
             return false;
         }
-
-
 
 //        String[] split = signUpEmail.split("@");
 //        String domain = split[1]; //This Will Give You The Domain After '@'
@@ -207,9 +204,7 @@ public class RegisterActivity extends AppCompatActivity {
 //            loginHere.setClickable(true);
 //            return false;
 //        }
-
         return true;
-
     }
 
 
