@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,7 +42,6 @@ import com.iitdh.sonusourav.instigo.HomeActivity;
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.User.UserClass;
 import com.iitdh.sonusourav.instigo.Utils.PreferenceManager;
-
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -327,8 +325,6 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
-
-
         }
     }
 
@@ -370,7 +366,6 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, " Account failed .\n Try again.", Toast.LENGTH_SHORT).show();
                                             loginPref.setIsFirstGoogleLogin(false);
                                             hideProgressDialog();
-
                                         }
                                     }).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -380,10 +375,8 @@ public class LoginActivity extends AppCompatActivity {
                                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                             hideProgressDialog();
                                             finish();
-
                                         }
                                     });
-
 
                                 }else {
                                     userRef = rootRef.child("Users").child(encodeUserEmail(user.getEmail())).child("name");
@@ -404,10 +397,12 @@ public class LoginActivity extends AppCompatActivity {
                                                 }
                                             });
 
+
                                         }
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
+
 
                                         }
                                     });
@@ -421,7 +416,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
 
                         }
-
                     }
                 });
     }
