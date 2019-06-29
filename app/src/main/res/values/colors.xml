@@ -70,4 +70,5 @@
     <color name="detail_color">#0995d1</color>
     <color name="red">#ec2e2e</color>
     <color name="blue">#35d9f2</color>
+    <color name="placeholder_background">#dddddd</color>
 </resources>

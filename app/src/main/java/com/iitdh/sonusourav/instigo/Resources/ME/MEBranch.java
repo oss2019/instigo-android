@@ -1,7 +1,6 @@
 package com.iitdh.sonusourav.instigo.Resources.ME;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,15 +44,14 @@ import java.util.Locale;
 
 public class MEBranch extends AppCompatActivity {
 
-    private ProgressDialog eeBranchProgressDialog;
-    private static final String TAG =MEBranch.class.getSimpleName() ;
+    private static final String TAG = MEBranch.class.getSimpleName();
     private ArrayList<CourseClass> meCourseList;
     private MECourseAdapter meCourseAdapter;
 
     private DatabaseReference meCourseDocRef;
     private FirebaseUser meCourseUser;
     private DatabaseReference meCourseRef;
-
+    private ShimmerFrameLayout mShimmerViewContainer;
 
     private TextView emptyCourses;
     private FloatingActionButton meAddCourse;
@@ -61,6 +60,7 @@ public class MEBranch extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.branch_listview);
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
 
         meInit();
         updateCourses();
@@ -75,97 +75,95 @@ public class MEBranch extends AppCompatActivity {
 
     }
 
-    private void addCourse(){
+    private void addCourse() {
 
 
-                final Dialog dialog = new Dialog(MEBranch.this);
-                dialog.setContentView(R.layout.add_course);
-                dialog.setTitle(" Add Course ");
-                dialog.setCancelable(true);
+        final Dialog dialog = new Dialog(MEBranch.this);
+        dialog.setContentView(R.layout.add_course);
+        dialog.setTitle(" Add Course ");
+        dialog.setCancelable(true);
 
 
-                final EditText courseNameEt =dialog.findViewById(R.id.course_add_name);
-                final EditText courseNoEt=dialog.findViewById(R.id.course_add_no);
-                Button addButton=dialog.findViewById(R.id.course_add_btn);
+        final EditText courseNameEt = dialog.findViewById(R.id.course_add_name);
+        final EditText courseNoEt = dialog.findViewById(R.id.course_add_no);
+        Button addButton = dialog.findViewById(R.id.course_add_btn);
 
 
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-                addButton.setOnClickListener(new View.OnClickListener() {
+                dialog.setCancelable(false);
+
+                final String name;
+                final String no;
+
+                name = courseNameEt.getText().toString().trim();
+                no = courseNoEt.getText().toString().trim();
+
+                if (name.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill Course name ", Toast.LENGTH_SHORT).show();
+                    courseNameEt.requestFocus();
+                    dialog.setCancelable(true);
+                    return;
+                }
+                if (no.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill Course no ", Toast.LENGTH_SHORT).show();
+                    courseNoEt.requestFocus();
+                    dialog.setCancelable(true);
+                    return;
+                }
+
+                mShimmerViewContainer.startShimmer();
+
+                Calendar calendar = Calendar.getInstance();
+                final String date = new SimpleDateFormat("dd MMM yy h:mm:ss a", Locale.US).format(calendar.getTime());
+
+
+                final String username = meCourseUser.getDisplayName();
+
+                CourseClass newCourse = new CourseClass(name, no, date, username, "EE");
+
+
+                String userReference = meCourseRef.push().getKey();
+                meCourseDocRef.child(name).push();
+
+                assert userReference != null;
+                meCourseRef.child(userReference).setValue(newCourse).addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Failed to add Course", Toast.LENGTH_SHORT).show();
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        CourseClass newCourse = new CourseClass(name, no, date, username, "EE");
+                        meCourseList.add(newCourse);
+                        meCourseAdapter.notifyDataSetChanged();
 
-                        dialog.setCancelable(false);
-
-                        final String name;
-                        final String no;
-
-                        name=courseNameEt.getText().toString().trim();
-                        no=courseNoEt.getText().toString().trim();
-
-                        if(name.isEmpty()){
-                            Toast.makeText(getApplicationContext(),"Please fill Course name ", Toast.LENGTH_SHORT).show();
-                            courseNameEt.requestFocus();
-                            dialog.setCancelable(true);
-                            return;
+                        if (emptyCourses.getVisibility() == View.VISIBLE) {
+                            emptyCourses.setVisibility(View.GONE);
                         }
-                        if(no.isEmpty()){
-                            Toast.makeText(getApplicationContext(),"Please fill Course no ", Toast.LENGTH_SHORT).show();
-                            courseNoEt.requestFocus();
-                            dialog.setCancelable(true);
-                            return;
-                        }
-
-                        showProgressDialog();
-
-                        Calendar calendar=Calendar.getInstance();
-                        final String date = new SimpleDateFormat("dd MMM yy h:mm:ss a", Locale.US).format(calendar.getTime());
-
-
-                        final String username= meCourseUser.getDisplayName();
-
-                        CourseClass newCourse=new CourseClass(name,no,date,username,"EE");
-
-
-                        String userReference= meCourseRef.push().getKey();
-                         meCourseDocRef.child(name).push();
-
-                        assert userReference != null;
-                        meCourseRef.child(userReference).setValue(newCourse).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(),"Failed to add Course",Toast.LENGTH_SHORT).show();
-                                hideProgressDialog();
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                CourseClass newCourse=new CourseClass(name,no,date,username,"EE");
-                                meCourseList.add(newCourse);
-                                meCourseAdapter.notifyDataSetChanged();
-
-                                if(emptyCourses.getVisibility()==View.VISIBLE){
-                                    emptyCourses.setVisibility(View.GONE);
-                                }
-                                hideProgressDialog();
-                            }
-                        });
-                        dialog.dismiss();
-
-
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
                     }
                 });
+                dialog.dismiss();
 
-                dialog.show();
 
             }
+        });
+
+        dialog.show();
+
+    }
 
 
+    private void updateCourses() {
 
-
-    private void updateCourses(){
-
-
-        showProgressDialog();
+        mShimmerViewContainer.startShimmer();
         meCourseRef.limitToLast(20).orderByChild("dateCreated").addListenerForSingleValueEvent(new ValueEventListener() {
 
 
@@ -173,7 +171,7 @@ public class MEBranch extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     meCourseList.clear();
 
                     emptyCourses.setVisibility(View.GONE);
@@ -182,7 +180,7 @@ public class MEBranch extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: reached");
                         CourseClass courses = snapshot.getValue(CourseClass.class);
 
-                        if(courses!=null){
+                        if (courses != null) {
                             meCourseList.add(courses);
                         }
 
@@ -190,27 +188,31 @@ public class MEBranch extends AppCompatActivity {
                     Collections.reverse(meCourseList);
                     meCourseAdapter.notifyDataSetChanged();
 
-                }
-                hideProgressDialog();
+                } else {
+                    emptyCourses.setVisibility(View.VISIBLE);
 
+                }
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 Log.e(TAG, "Failed to read value.", databaseError.toException());
-                hideProgressDialog();
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
             }
         });
 
 
     }
 
-    private void meInit(){
+    private void meInit() {
 
-        emptyCourses=findViewById(R.id.branch_course_empty);
+        emptyCourses = findViewById(R.id.branch_course_empty);
         ListView listView = findViewById(R.id.branch_list_view);
-        meAddCourse =findViewById(R.id.course_add_fab);
+        meAddCourse = findViewById(R.id.course_add_fab);
         meCourseList = new ArrayList<>();
 
         FirebaseAuth eeCourseAuth = FirebaseAuth.getInstance();
@@ -221,7 +223,7 @@ public class MEBranch extends AppCompatActivity {
         meCourseUser = eeCourseAuth.getCurrentUser();
 
 
-        if(meCourseUser ==null){
+        if (meCourseUser == null) {
             startActivity(new Intent(MEBranch.this, LoginActivity.class));
             finish();
         }
@@ -259,24 +261,6 @@ public class MEBranch extends AppCompatActivity {
         }
         return true;
 
-    }
-
-    public void showProgressDialog() {
-
-        if (eeBranchProgressDialog == null) {
-            eeBranchProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            eeBranchProgressDialog.setMessage("Updating courses....");
-            eeBranchProgressDialog.setIndeterminate(true);
-            eeBranchProgressDialog.setCanceledOnTouchOutside(false);
-        }
-
-        eeBranchProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (eeBranchProgressDialog != null && eeBranchProgressDialog.isShowing()) {
-            eeBranchProgressDialog.dismiss();
-        }
     }
 
 }
