@@ -2,124 +2,127 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/divider_color">
+    android:background="@color/divider_color"
+    >
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:layout_margin="5dp">
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="5dp"
+      android:background="@color/white"
+      >
 
     <TextView
+        android:id="@+id/details_title"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:id="@+id/details_title"
-        android:text="Complain Title"
-        android:gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:textSize="22sp"
+        android:gravity="center_horizontal"
+        android:text="Complain Title"
         android:textColor="@color/black"
+        android:textSize="22sp"
         />
 
     <TextView
+        android:id="@+id/details_date"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:id="@+id/details_date"
-        android:text="Date"
-        android:gravity="center"
         android:layout_below="@id/details_title"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:textSize="15sp"
+        android:gravity="center"
+        android:text="Date"
         android:textColor="@color/light_black"
+        android:textSize="15sp"
         />
     <TextView
+        android:id="@+id/details_time"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:id="@+id/details_time"
-        android:text="Time"
-        android:gravity="center"
         android:layout_alignBottom="@id/details_date"
-        android:layout_below="@id/details_title"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/details_title"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
-        android:textSize="15sp"
+        android:gravity="center"
+        android:text="Time"
         android:textColor="@color/light_black"
+        android:textSize="15sp"
         />
 
     <TextView
+        android:id="@+id/details_username"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:id="@+id/details_username"
-        android:text="Username"
-        android:gravity="start|center_vertical"
         android:layout_below="@id/details_date"
         android:layout_marginStart="15dp"
-        android:textSize="15sp"
+        android:gravity="start|center_vertical"
+        android:text="Username"
         android:textColor="@color/light_black"
+        android:textSize="15sp"
         />
     <TextView
+        android:id="@+id/details_email"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:id="@+id/details_email"
-        android:text="Email"
-        android:gravity="start|center_vertical"
         android:layout_below="@id/details_username"
         android:layout_marginStart="15dp"
-        android:textSize="15sp"
+        android:gravity="start|center_vertical"
+        android:text="Email"
         android:textColor="@color/green"
+        android:textSize="15sp"
         />
 
     <TextView
+        android:id="@+id/details_type"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:id="@+id/details_type"
-        android:text="Complain Type"
-        android:gravity="start|center_vertical"
         android:layout_below="@id/details_email"
         android:layout_marginStart="15dp"
-        android:textSize="15sp"
+        android:gravity="start|center_vertical"
+        android:text="Complain Type"
         android:textColor="@color/light_black"
+        android:textSize="15sp"
         />
 
     <ScrollView
+        android:id="@+id/details_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/details_scrollview"
         android:layout_below="@id/details_type"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/details_info"
-            android:maxLines="10"
-            android:minHeight="50dp"
-            android:hint="No Details Available"
-            android:textColorHint="@color/light_black"
-            android:padding="5dp"
-            android:gravity="center"
-            android:layout_marginStart="5dp"
-            android:textSize="17sp"
-            android:textColor="@color/light_black" />
+        android:layout_marginTop="10dp"
+        >
+      <TextView
+          android:id="@+id/details_info"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="5dp"
+          android:gravity="center"
+          android:hint="No Details Available"
+          android:maxLines="10"
+          android:minHeight="50dp"
+          android:padding="5dp"
+          android:textColor="@color/light_black"
+          android:textColorHint="@color/light_black"
+          android:textSize="17sp"
+          />
     </ScrollView>
 
     <Button
+        android:id="@+id/details_status_btn"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:id="@+id/details_status_btn"
-        android:background="@color/red"
-        android:layout_marginStart="20dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@color/red"
         android:text="Pending"
         android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
         />
 
 
-
-</RelativeLayout>
+  </RelativeLayout>
 
 </LinearLayout>

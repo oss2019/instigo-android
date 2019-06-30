@@ -2,13 +2,10 @@ package com.iitdh.sonusourav.instigo.Complaints;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,10 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.Utils.CommonFunctions;
@@ -32,7 +27,6 @@ public class ComplaintsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +35,8 @@ public class ComplaintsActivity extends AppCompatActivity
         CommonFunctions.setUser(this);
 
         findViewById(R.id.include_maintenance).setVisibility(View.VISIBLE);
-        Button registerButton=findViewById(R.id.maintenance_register);
-        Button statusButton=findViewById(R.id.maintenance_status);
+        Button registerButton = findViewById(R.id.maintenance_register);
+        Button statusButton = findViewById(R.id.maintenance_status);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -56,7 +50,6 @@ public class ComplaintsActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -78,18 +71,17 @@ public class ComplaintsActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return CommonFunctions.navigationItemSelect(item, this);
     }
 
 
-    public void setUpImageSlider(){
+    public void setUpImageSlider() {
         UltraViewPager ultraViewPager = findViewById(R.id.ultra_viewpager);
         ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
         //initialize UltraPagerAdapter，and add child view to UltraViewPager
-        PagerAdapter adapter = new SliderAdapter(false,this);
+        PagerAdapter adapter = new SliderAdapter(false, this);
         ultraViewPager.setAdapter(adapter);
 
         //initialize built-in indicator
@@ -101,7 +93,7 @@ public class ComplaintsActivity extends AppCompatActivity
                 .setNormalColor((ContextCompat.getColor(this, R.color.black)))
                 .setRadius((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics()));
         //set the alignment
-        ultraViewPager.getIndicator().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM).setMargin(0,0,0,10);
+        ultraViewPager.getIndicator().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM).setMargin(0, 0, 0, 10);
         //construct built-in indicator, and add it to  UltraViewPager
         ultraViewPager.getIndicator().build();
 

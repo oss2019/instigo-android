@@ -1,6 +1,5 @@
 package com.iitdh.sonusourav.instigo.Complaints;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -17,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,11 +37,10 @@ public class ComplainStatus extends AppCompatActivity {
     private static final String TAG =ComplainStatus.class.getSimpleName() ;
     private ArrayList<ComplainItemClass> complainStatusList;
     private ComplaintsAdapter statusAdapter;
-    private FirebaseAuth statusAuth;
     private FirebaseUser statusUser;
     public static final int REFRESH_DELAY = 4000;
     private PullToRefreshView mPullToRefreshView;
-    private ProgressDialog statusProgressDialog;
+    private ShimmerFrameLayout mShimmerViewContainer;
 
 
 
@@ -51,9 +50,11 @@ public class ComplainStatus extends AppCompatActivity {
         setContentView(R.layout.activity_main_status);
 
         ListView listView = findViewById(R.id.status_listview);
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+
         complainStatusList = new ArrayList<>();
 
-        showProgressDialog();
+        mShimmerViewContainer.startShimmer();
 
         FirebaseAuth statusAuth = FirebaseAuth.getInstance();
         FirebaseDatabase statusInstance = FirebaseDatabase.getInstance();
@@ -103,11 +104,13 @@ public class ComplainStatus extends AppCompatActivity {
                     }
                     Collections.reverse(complainStatusList);
                     statusAdapter.notifyDataSetChanged();
-                    hideProgressDialog();
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
                     mPullToRefreshView.setVisibility(View.VISIBLE);
 
                 }else{
-                    hideProgressDialog();
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
 
                 }
 
@@ -117,7 +120,8 @@ public class ComplainStatus extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 Log.e(TAG, "Failed to read value.", databaseError.toException());
-                hideProgressDialog();
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
             }
         });
 
@@ -166,24 +170,6 @@ public class ComplainStatus extends AppCompatActivity {
         }
         return true;
 
-    }
-
-    public void showProgressDialog() {
-
-        if (statusProgressDialog == null) {
-            statusProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            statusProgressDialog.setMessage("Fetching complaints....");
-            statusProgressDialog.setIndeterminate(true);
-            statusProgressDialog.setCanceledOnTouchOutside(false);
-        }
-
-        statusProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (statusProgressDialog != null && statusProgressDialog.isShowing()) {
-            statusProgressDialog.dismiss();
-        }
     }
 
 }
