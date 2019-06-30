@@ -1,6 +1,5 @@
 package com.iitdh.sonusourav.instigo.Complaints;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -38,7 +37,6 @@ public class ComplainStatus extends AppCompatActivity {
     private static final String TAG =ComplainStatus.class.getSimpleName() ;
     private ArrayList<ComplainItemClass> complainStatusList;
     private ComplaintsAdapter statusAdapter;
-    private FirebaseAuth statusAuth;
     private FirebaseUser statusUser;
     public static final int REFRESH_DELAY = 4000;
     private PullToRefreshView mPullToRefreshView;
