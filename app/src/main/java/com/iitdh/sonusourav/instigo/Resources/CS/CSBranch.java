@@ -1,7 +1,6 @@
 package com.iitdh.sonusourav.instigo.Resources.CS;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,17 +42,16 @@ import java.util.Collections;
 import java.util.Locale;
 
 
-public class CSBranch  extends AppCompatActivity {
+public class CSBranch extends AppCompatActivity {
 
-    private ProgressDialog csBranchProgressDialog;
-    private static final String TAG =CSBranch.class.getSimpleName() ;
+    private static final String TAG = CSBranch.class.getSimpleName();
     private ArrayList<CourseClass> csCourseList;
     private CSCourseAdapter csCSCourseAdapter;
 
     private DatabaseReference csCourseDocRef;
     private FirebaseUser csCourseUser;
     private DatabaseReference csCourseRef;
-
+    private ShimmerFrameLayout mShimmerViewContainer;
 
     private TextView emptyCourses;
     private FloatingActionButton csAddCourse;
@@ -61,6 +60,7 @@ public class CSBranch  extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.branch_listview);
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
 
         csInit();
         updateCourses();
@@ -75,97 +75,96 @@ public class CSBranch  extends AppCompatActivity {
 
     }
 
-    private void addCourse(){
+    private void addCourse() {
 
 
-                final Dialog dialog = new Dialog(CSBranch.this);
-                dialog.setContentView(R.layout.add_course);
-                dialog.setTitle(" Add Course ");
-                dialog.setCancelable(true);
+        final Dialog dialog = new Dialog(CSBranch.this);
+        dialog.setContentView(R.layout.add_course);
+        dialog.setTitle(" Add Course ");
+        dialog.setCancelable(true);
 
 
-                final EditText courseNameEt =dialog.findViewById(R.id.course_add_name);
-                final EditText courseNoEt=dialog.findViewById(R.id.course_add_no);
-                Button addButton=dialog.findViewById(R.id.course_add_btn);
+        final EditText courseNameEt = dialog.findViewById(R.id.course_add_name);
+        final EditText courseNoEt = dialog.findViewById(R.id.course_add_no);
+        Button addButton = dialog.findViewById(R.id.course_add_btn);
 
 
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-                addButton.setOnClickListener(new View.OnClickListener() {
+                dialog.setCancelable(false);
+
+                final String name;
+                final String no;
+
+                name = courseNameEt.getText().toString().trim();
+                no = courseNoEt.getText().toString().trim();
+
+                if (name.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill Course name ", Toast.LENGTH_SHORT).show();
+                    courseNameEt.requestFocus();
+                    dialog.setCancelable(true);
+                    return;
+                }
+                if (no.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill Course no ", Toast.LENGTH_SHORT).show();
+                    courseNoEt.requestFocus();
+                    dialog.setCancelable(true);
+                    return;
+                }
+
+                mShimmerViewContainer.startShimmer();
+
+                Calendar calendar = Calendar.getInstance();
+                final String date = new SimpleDateFormat("dd MMM yy h:mm:ss a", Locale.US).format(calendar.getTime());
+
+
+                final String username = csCourseUser.getDisplayName();
+
+                CourseClass newCourse = new CourseClass(name, no, date, username, "CSE");
+
+
+                String userReference = csCourseRef.push().getKey();
+                csCourseDocRef.child(name).push();
+
+                assert userReference != null;
+                csCourseRef.child(userReference).setValue(newCourse).addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Failed to add Course", Toast.LENGTH_SHORT).show();
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        CourseClass newCourse = new CourseClass(name, no, date, username, "CSE");
+                        csCourseList.add(newCourse);
+                        csCSCourseAdapter.notifyDataSetChanged();
 
-                        dialog.setCancelable(false);
-
-                        final String name;
-                        final String no;
-
-                        name=courseNameEt.getText().toString().trim();
-                        no=courseNoEt.getText().toString().trim();
-
-                        if(name.isEmpty()){
-                            Toast.makeText(getApplicationContext(),"Please fill Course name ", Toast.LENGTH_SHORT).show();
-                            courseNameEt.requestFocus();
-                            dialog.setCancelable(true);
-                            return;
+                        if (emptyCourses.getVisibility() == View.VISIBLE) {
+                            emptyCourses.setVisibility(View.GONE);
                         }
-                        if(no.isEmpty()){
-                            Toast.makeText(getApplicationContext(),"Please fill Course no ", Toast.LENGTH_SHORT).show();
-                            courseNoEt.requestFocus();
-                            dialog.setCancelable(true);
-                            return;
-                        }
-
-                        showProgressDialog();
-
-                        Calendar calendar=Calendar.getInstance();
-                        final String date = new SimpleDateFormat("dd MMM yy h:mm:ss a", Locale.US).format(calendar.getTime());
-
-
-                        final String username=csCourseUser.getDisplayName();
-
-                        CourseClass newCourse=new CourseClass(name,no,date,username,"CSE");
-
-
-                        String userReference= csCourseRef.push().getKey();
-                         csCourseDocRef.child(name).push();
-
-                        assert userReference != null;
-                        csCourseRef.child(userReference).setValue(newCourse).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(),"Failed to add Course",Toast.LENGTH_SHORT).show();
-                                hideProgressDialog();
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                CourseClass newCourse=new CourseClass(name,no,date,username,"CSE");
-                                csCourseList.add(newCourse);
-                                csCSCourseAdapter.notifyDataSetChanged();
-
-                                if(emptyCourses.getVisibility()==View.VISIBLE){
-                                    emptyCourses.setVisibility(View.GONE);
-                                }
-                                hideProgressDialog();
-                            }
-                        });
-                        dialog.dismiss();
-
-
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
                     }
                 });
+                dialog.dismiss();
 
-                dialog.show();
 
             }
+        });
+
+        dialog.show();
+
+    }
 
 
+    private void updateCourses() {
 
 
-    private void updateCourses(){
-
-
-        showProgressDialog();
+        mShimmerViewContainer.startShimmer();
         csCourseRef.limitToLast(20).orderByChild("dateCreated").addListenerForSingleValueEvent(new ValueEventListener() {
 
 
@@ -173,7 +172,7 @@ public class CSBranch  extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     csCourseList.clear();
 
                     emptyCourses.setVisibility(View.GONE);
@@ -182,7 +181,7 @@ public class CSBranch  extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: reached");
                         CourseClass courses = snapshot.getValue(CourseClass.class);
 
-                        if(courses!=null){
+                        if (courses != null) {
                             csCourseList.add(courses);
                         }
 
@@ -190,8 +189,11 @@ public class CSBranch  extends AppCompatActivity {
                     Collections.reverse(csCourseList);
                     csCSCourseAdapter.notifyDataSetChanged();
 
+                } else {
+                    emptyCourses.setVisibility(View.VISIBLE);
                 }
-                hideProgressDialog();
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
 
             }
 
@@ -199,29 +201,30 @@ public class CSBranch  extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 Log.e(TAG, "Failed to read value.", databaseError.toException());
-                hideProgressDialog();
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
             }
         });
 
 
     }
 
-    private void csInit(){
+    private void csInit() {
 
-        emptyCourses=findViewById(R.id.branch_course_empty);
+        emptyCourses = findViewById(R.id.branch_course_empty);
         ListView listView = findViewById(R.id.branch_list_view);
-        csAddCourse =findViewById(R.id.course_add_fab);
+        csAddCourse = findViewById(R.id.course_add_fab);
         csCourseList = new ArrayList<>();
 
         FirebaseAuth csCourseAuth = FirebaseAuth.getInstance();
         FirebaseDatabase csCourseInstance = FirebaseDatabase.getInstance();
         DatabaseReference csCourseRootRef = csCourseInstance.getReference("Resources");
-        csCourseRef= csCourseRootRef.child("Courses").child("CSE").getRef();
-        csCourseDocRef= csCourseRootRef.child("CourseDocs").child("CSE").getRef();
+        csCourseRef = csCourseRootRef.child("Courses").child("CSE").getRef();
+        csCourseDocRef = csCourseRootRef.child("CourseDocs").child("CSE").getRef();
         csCourseUser = csCourseAuth.getCurrentUser();
 
 
-        if(csCourseUser ==null){
+        if (csCourseUser == null) {
             startActivity(new Intent(CSBranch.this, LoginActivity.class));
             finish();
         }
@@ -259,24 +262,6 @@ public class CSBranch  extends AppCompatActivity {
         }
         return true;
 
-    }
-
-    public void showProgressDialog() {
-
-        if (csBranchProgressDialog == null) {
-            csBranchProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            csBranchProgressDialog.setMessage("Updating courses....");
-            csBranchProgressDialog.setIndeterminate(true);
-            csBranchProgressDialog.setCanceledOnTouchOutside(false);
-        }
-
-        csBranchProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (csBranchProgressDialog != null && csBranchProgressDialog.isShowing()) {
-            csBranchProgressDialog.dismiss();
-        }
     }
 
 }
