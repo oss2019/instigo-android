@@ -71,4 +71,5 @@
     <color name="red">#ec2e2e</color>
     <color name="blue">#35d9f2</color>
     <color name="placeholder_background">#dddddd</color>
+    <color name="settings_background">#95FFFFFF</color>
 </resources>
