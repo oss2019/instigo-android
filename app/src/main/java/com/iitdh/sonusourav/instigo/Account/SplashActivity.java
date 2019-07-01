@@ -83,6 +83,7 @@ public class SplashActivity extends AppCompatActivity {
                         public void run() {
                             final Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
                             SplashActivity.this.startActivity(mainIntent);
+                            overridePendingTransition(R.anim.fade_in, 0);
                             SplashActivity.this.finish();
                         }
                     }, 4600);
