@@ -5,10 +5,10 @@
 
 
 # InstiGo-Android
-InstiGO is an android app for the students and faculties of IIT Dharwad that provide a one stop solution for matters related to mess, academia and hostel. 
+InstiGo is an android app for the students and faculties of IIT Dharwad that provide a one stop solution for matters related to mess, academia and hostel. 
 
 ## InstiGo apk
-[![button](https://user-images.githubusercontent.com/34706326/57187663-142a7f00-6f10-11e9-9d89-144e9f46e8f3.jpg)](https://drive.google.com/open?id=1iE_qPeSnJFIYzzZZOspIjTET86psqJeR)
+[![button](https://user-images.githubusercontent.com/34706326/57187663-142a7f00-6f10-11e9-9d89-144e9f46e8f3.jpg)](https://drive.google.com/open?id=186EfacIxiywjDOTjxS0nG5ktbw2RuX66)
 ## Libraries Used
 
 - [Firebase](https://github.com/firebase/quickstart-android) - Firebase is Google's mobile platform that helps you quickly develop high-quality apps
