@@ -54,8 +54,8 @@ public class TiffinAlarmReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentIntent(pendingIntent);
-        builder.setSmallIcon(R.mipmap.logo_instigo);
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_instigo));
+        builder.setSmallIcon(R.mipmap.icon_instigo);
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_instigo));
         builder.setContentTitle("Today's Tiffin");
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(menu));
         builder.setContentText(menu);
