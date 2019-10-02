@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -125,7 +126,11 @@ public class CommonFunctions {
             }
 
             case R.id.nav_feedback: {
-                activity.startActivity(new Intent().setClass(activity, Feedback.class));
+                String url = "https://goo.gl/forms/2FMpLtR0hskOGj5C2";
+
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(activity, Uri.parse(url));
                 break;
 
             }

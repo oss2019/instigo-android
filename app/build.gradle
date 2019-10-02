@@ -65,6 +65,7 @@ dependencies {
     implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'com.facebook.shimmer:shimmer:0.4.0'
+    implementation 'com.android.support:customtabs:27.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

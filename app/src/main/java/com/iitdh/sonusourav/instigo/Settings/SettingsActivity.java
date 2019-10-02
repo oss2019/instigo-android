@@ -1,7 +1,12 @@
 package com.iitdh.sonusourav.instigo.Settings;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
@@ -78,6 +83,18 @@ public class SettingsActivity extends AppCompatActivity
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings);
+
+            Preference feedbackPreference = (Preference) findPreference("feedback");
+            feedbackPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    String url = "https://goo.gl/forms/2FMpLtR0hskOGj5C2";
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(getActivity(), Uri.parse(url));
+                    return true;
+                }
+            });
+
         }
     }
 }
