@@ -25,11 +25,9 @@
       android:title="Feedback">
 
     <Preference
+        android:key="feedback"
         android:summary="Fill out the form to report a bug or give some feedback"
         android:title="Feedback">
-      <intent
-          android:action="android.intent.action.VIEW"
-          android:data="https://goo.gl/forms/2FMpLtR0hskOGj5C2"/>
     </Preference>
 
   </PreferenceCategory>
