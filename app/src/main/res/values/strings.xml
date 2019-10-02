@@ -1,5 +1,12 @@
 <resources>
   <string name="app_name">InstiGo</string>
+
+  <!--  Notification Channel Info -->
+  <string name="notification_channel_name">Alarms</string>
+  <string name="notification_channel_description">Notifications for all alarms from Instigo</string>
+  <string name="alarm_notification_channel_id">alarm_notification_channel_id</string>
+  <!--  Notification Channel Info -->
+
   <string name="title_activity_welcome">Home Screen</string>
   <string name="next">NEXT</string>
   <string name="skip">SKIP</string>

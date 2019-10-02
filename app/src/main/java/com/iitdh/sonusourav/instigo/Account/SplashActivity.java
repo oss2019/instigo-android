@@ -1,9 +1,12 @@
 package com.iitdh.sonusourav.instigo.Account;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -70,40 +73,59 @@ public class SplashActivity extends AppCompatActivity {
         ImageView splash = findViewById(R.id.splash_iv);
 
 
-            Glide.with(this)
-                    .load(R.drawable.gif_splash)
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                    .into(splash);
+        Glide.with(this)
+                .load(R.drawable.gif_splash)
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                .into(splash);
+
+        createNotificationChannel();
+
+        if (splashPrefManager.isLoggedIn()) {
+            Log.d(TAG, "Splash:onCreate: isLoggedIn=true");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    final Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                    SplashActivity.this.startActivity(mainIntent);
+                    overridePendingTransition(R.anim.fade_in, 0);
+                    SplashActivity.this.finish();
+                }
+            }, 4600);
 
 
-                if (splashPrefManager.isLoggedIn()) {
-                    Log.d(TAG, "Splash:onCreate: isLoggedIn=true");
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            final Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                            SplashActivity.this.startActivity(mainIntent);
-                            overridePendingTransition(R.anim.fade_in, 0);
-                            SplashActivity.this.finish();
-                        }
-                    }, 4600);
+        } else {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    final Intent mainIntent = new Intent(SplashActivity.this, IntroScreen.class);
+                    SplashActivity.this.startActivity(mainIntent);
+                    SplashActivity.this.finish();
+                }
+            }, 4600);
+
+            Log.d(TAG, "SharedPreference: isLoggedIn=false");
+
+        }
 
 
-                } else {
+    }
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            final Intent mainIntent = new Intent(SplashActivity.this, IntroScreen.class);
-                            SplashActivity.this.startActivity(mainIntent);
-                            SplashActivity.this.finish();
-                        }
-                    }, 4600);
-
-                    Log.d(TAG, "SharedPreference: isLoggedIn=false");
-
-                    }
-
-
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.notification_channel_name);
+            String description = getString(R.string.notification_channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(getString(R.string.alarm_notification_channel_id), name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 }
