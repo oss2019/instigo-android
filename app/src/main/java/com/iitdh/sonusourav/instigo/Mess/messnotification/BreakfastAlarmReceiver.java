@@ -61,6 +61,7 @@ public class BreakfastAlarmReceiver extends BroadcastReceiver {
         builder.setContentText(menu);
         builder.setAutoCancel(true);
         builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        builder.setChannelId(context.getString(R.string.alarm_notification_channel_id));
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
