@@ -1,15 +1,21 @@
 package com.iitdh.sonusourav.instigo.Account;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String signUpUsername;
     private String signUpPass;
     private String errorCode;
+    private RelativeLayout relativeLayout;
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth registerAuth;
@@ -237,6 +244,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerPass =findViewById(R.id.register_pass);
         registerButton=findViewById(R.id.button_register);
         loginHere=findViewById(R.id.register_bottom);
+        relativeLayout= findViewById(R.id.activity_register_relative_layout);
         registerEmail.setText("");
         registerUsername.setText("");
         registerPass.setText("");
@@ -303,21 +311,41 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog() {
+        if (isNetworkAvailable()){
+            if (registerProgressDialog == null) {
+                registerProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
+                registerProgressDialog.setMessage("Creating Account ....");
+                registerProgressDialog.setIndeterminate(true);
+                registerProgressDialog.setCanceledOnTouchOutside(false);
+            }
 
-        if (registerProgressDialog == null) {
-            registerProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            registerProgressDialog.setMessage("Creating Account ....");
-            registerProgressDialog.setIndeterminate(true);
-            registerProgressDialog.setCanceledOnTouchOutside(false);
+            registerProgressDialog.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isNetworkAvailable()){
+                        hideProgressDialog();
+                        Snackbar.make(relativeLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
+
+                    }
+                }
+            },15000);
+        }else {
+            Snackbar.make(relativeLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
         }
 
-        registerProgressDialog.show();
+
     }
 
     public void hideProgressDialog() {
         if (registerProgressDialog != null && registerProgressDialog.isShowing()) {
             registerProgressDialog.dismiss();
         }
+    }
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
     }
 
 }

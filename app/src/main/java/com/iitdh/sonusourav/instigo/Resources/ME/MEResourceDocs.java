@@ -2,17 +2,23 @@ package com.iitdh.sonusourav.instigo.Resources.ME;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -62,7 +68,7 @@ public class MEResourceDocs extends AppCompatActivity {
 
     private ProgressDialog meDocProgressDialog;
 
-    private static final String TAG =MEResourceDocs.class.getSimpleName() ;
+    private static final String TAG = MEResourceDocs.class.getSimpleName();
     private ArrayList<DocsClass> meDocList;
     private DocsAdapter meDocAdapter;
 
@@ -86,22 +92,24 @@ public class MEResourceDocs extends AppCompatActivity {
     private String subTopic;
     private String type;
 
-    private  Dialog dialog;
+    private Dialog dialog;
     private Button addButton;
     private DocsClass newDoc;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doc_main);
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        coordinatorLayout = findViewById(R.id.main_content);
 
-        Bundle bundle=getIntent().getExtras();
+        Bundle bundle = getIntent().getExtras();
         assert bundle != null;
-        courseName=bundle.getString("meCourseName");
-        courseNo=bundle.getString("meCourseNo");
+        courseName = bundle.getString("meCourseName");
+        courseNo = bundle.getString("meCourseNo");
 
         meInit();
 
@@ -125,10 +133,10 @@ public class MEResourceDocs extends AppCompatActivity {
 
     }
 
-    private void meInit(){
+    private void meInit() {
 
-        emptyDoc=findViewById(R.id.doc_empty);
-        meAddDoc =findViewById(R.id.doc_add);
+        emptyDoc = findViewById(R.id.doc_empty);
+        meAddDoc = findViewById(R.id.doc_add);
         List<DocsClass> courseList = new ArrayList<>();
         DocsAdapter adapter = new DocsAdapter(this, courseList);
 
@@ -138,7 +146,7 @@ public class MEResourceDocs extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        meAddDoc =findViewById(R.id.doc_add);
+        meAddDoc = findViewById(R.id.doc_add);
         meDocList = new ArrayList<>();
 
         FirebaseAuth meDocAuth = FirebaseAuth.getInstance();
@@ -148,9 +156,9 @@ public class MEResourceDocs extends AppCompatActivity {
         meDocUser = meDocAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference().child(encodeUserEmail(Objects.requireNonNull(meDocUser.getEmail())));
-        docStorageRootRef=storageReference.child("Resources").child("ME");
+        docStorageRootRef = storageReference.child("Resources").child("ME");
 
-        if(meDocUser ==null){
+        if (meDocUser == null) {
             startActivity(new Intent(MEResourceDocs.this, LoginActivity.class));
             finish();
         }
@@ -160,10 +168,10 @@ public class MEResourceDocs extends AppCompatActivity {
     }
 
 
-    private void updateDocs(){
+    private void updateDocs() {
 
 
-        Log.d("meUpdateDocs","reaching");
+        Log.d("meUpdateDocs", "reaching");
         showProgressDialog();
         meDocRef.limitToLast(20).orderByChild("dateCreated").addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -172,7 +180,7 @@ public class MEResourceDocs extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     meDocList.clear();
 
                     emptyDoc.setVisibility(View.GONE);
@@ -181,10 +189,10 @@ public class MEResourceDocs extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: reached");
                         DocsClass document = snapshot.getValue(DocsClass.class);
 
-                        if(document!=null){
+                        if (document != null) {
                             meDocList.add(document);
 
-                            if(emptyDoc.getVisibility()==View.VISIBLE){
+                            if (emptyDoc.getVisibility() == View.VISIBLE) {
                                 emptyDoc.setVisibility(View.GONE);
                             }
                         }
@@ -210,9 +218,7 @@ public class MEResourceDocs extends AppCompatActivity {
     }
 
 
-
-
-    private void addDoc(){
+    private void addDoc() {
 
 
         dialog = new Dialog(MEResourceDocs.this);
@@ -221,18 +227,18 @@ public class MEResourceDocs extends AppCompatActivity {
         dialog.setCancelable(true);
 
 
-        final EditText topicName =dialog.findViewById(R.id.doc_topic);
-        final EditText subTopicName=dialog.findViewById(R.id.doc_sub_topic);
-        final Spinner docType=dialog.findViewById(R.id.doc_type);
-        final Button uploadDoc=dialog.findViewById(R.id.doc_upload);
-        addButton=dialog.findViewById(R.id.doc_add_btn);
+        final EditText topicName = dialog.findViewById(R.id.doc_topic);
+        final EditText subTopicName = dialog.findViewById(R.id.doc_sub_topic);
+        final Spinner docType = dialog.findViewById(R.id.doc_type);
+        final Button uploadDoc = dialog.findViewById(R.id.doc_upload);
+        addButton = dialog.findViewById(R.id.doc_add_btn);
 
 
         uploadDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                type=docType.getSelectedItem().toString();
-                Log.d("docType ",type);
+                type = docType.getSelectedItem().toString();
+                Log.d("docType ", type);
                 chooseImage(type);
             }
         });
@@ -244,18 +250,18 @@ public class MEResourceDocs extends AppCompatActivity {
                 dialog.setCancelable(false);
 
 
-                topic=topicName.getText().toString().trim();
-                subTopic=subTopicName.getText().toString().trim();
-                type=docType.getSelectedItem().toString();
+                topic = topicName.getText().toString().trim();
+                subTopic = subTopicName.getText().toString().trim();
+                type = docType.getSelectedItem().toString();
 
-                if(topic.isEmpty()){
-                    Toast.makeText(getApplicationContext(),"Please fill topic name ", Toast.LENGTH_SHORT).show();
+                if (topic.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill topic name ", Toast.LENGTH_SHORT).show();
                     topicName.requestFocus();
                     dialog.setCancelable(true);
                     return;
                 }
-                if(subTopic.isEmpty()){
-                    Toast.makeText(getApplicationContext(),"Please fill sub-topic name ", Toast.LENGTH_SHORT).show();
+                if (subTopic.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill sub-topic name ", Toast.LENGTH_SHORT).show();
                     subTopicName.requestFocus();
                     dialog.setCancelable(true);
                     return;
@@ -263,29 +269,29 @@ public class MEResourceDocs extends AppCompatActivity {
 
                 showProgressDialog();
 
-                Calendar calendar=Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
                 final String date = new SimpleDateFormat("dd MMM yy h:mm:ss a", Locale.US).format(calendar.getTime());
 
 
-                final String username= meDocUser.getDisplayName();
+                final String username = meDocUser.getDisplayName();
 
-                 newDoc=new DocsClass(courseName,courseNo,date,username,"EE",topic,subTopic,type);
+                newDoc = new DocsClass(courseName, courseNo, date, username, "EE", topic, subTopic, type);
 
 
-                userReference= meDocRef.child(topic).push().getKey();
+                userReference = meDocRef.child(topic).push().getKey();
                 meDocRef.child(topic).push();
 
                 assert userReference != null;
                 meDocRef.child(userReference).setValue(newDoc).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"Failed to add document",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Failed to add document", Toast.LENGTH_SHORT).show();
                         hideProgressDialog();
                     }
                 }).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        newDoc=new DocsClass(courseName,courseNo,date,username,"EE",topic,subTopic,type);
+                        newDoc = new DocsClass(courseName, courseNo, date, username, "EE", topic, subTopic, type);
                         uploadImage();
 
                         hideProgressDialog();
@@ -311,64 +317,53 @@ public class MEResourceDocs extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
 
 
-        if(type.equalsIgnoreCase("Pdf")){
+        if (type.equalsIgnoreCase("Pdf")) {
             intent.setType("application/pdf");
 
-        }
-
-        else if(type.equalsIgnoreCase("Image")) {
+        } else if (type.equalsIgnoreCase("Image")) {
             intent.setType("image/*");
-        }
-        else if(type.equalsIgnoreCase("ppt")) {
+        } else if (type.equalsIgnoreCase("ppt")) {
             intent.setType("application/vnd.ms-powerpoint");
-        }
-        else if(type.equalsIgnoreCase("Excel")) {
+        } else if (type.equalsIgnoreCase("Excel")) {
             intent.setType("application/vnd.ms-excel");
-        }
-        else if(type.equalsIgnoreCase("Zip")){
+        } else if (type.equalsIgnoreCase("Zip")) {
             intent.setType("application/zip");
 
-        }else{
+        } else {
             intent.setType("*/*");
         }
 
-        startActivityForResult(Intent.createChooser(intent, "Select file"),PICK_IMAGE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, "Select file"), PICK_IMAGE_REQUEST);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if((requestCode == PICK_IMAGE_REQUEST)  && resultCode == RESULT_OK  && data != null && data.getData() != null )
-        {
+        if ((requestCode == PICK_IMAGE_REQUEST) && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
 
-                if(dialog.isShowing()){
+                if (dialog.isShowing()) {
                     addButton.setEnabled(true);
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
 
-
     private void uploadImage() {
 
-        if(filePath != null)
-        {
+        if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
 
-                docStorageRef = docStorageRootRef.child(courseName).child(topic);
-
+            docStorageRef = docStorageRootRef.child(courseName).child(topic);
 
 
             docStorageRef.putFile(filePath)
@@ -381,36 +376,36 @@ public class MEResourceDocs extends AppCompatActivity {
                             docStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    Log.d("Pic Url Fetching","success");
+                                    Log.d("Pic Url Fetching", "success");
 
 
-                                        meDocRef.child(userReference).child("imageUrl").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d("Pic Url Uploading","success");
-                                                updateDocs();
+                                    meDocRef.child(userReference).child("imageUrl").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("Pic Url Uploading", "success");
+                                            updateDocs();
 
 
-                                                if(emptyDoc.getVisibility()==View.VISIBLE){
-                                                    emptyDoc.setVisibility(View.GONE);
-                                                }
+                                            if (emptyDoc.getVisibility() == View.VISIBLE) {
+                                                emptyDoc.setVisibility(View.GONE);
                                             }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.d("Pic Url Uploading","failed");
-                                                Toast.makeText(getApplicationContext(),"Network error!\nFailed to upload pic.",Toast.LENGTH_SHORT).show();
-
-
-                                            }
-                                        });
                                         }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("Pic Url Uploading", "failed");
+                                            Toast.makeText(getApplicationContext(), "Network error!\nFailed to upload pic.", Toast.LENGTH_SHORT).show();
+
+
+                                        }
+                                    });
+                                }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
 
-                                    Log.d("Pic Url Fetching","failure");
-                                    Toast.makeText(getApplicationContext(),"Network error!\n Failed to upload pic.",Toast.LENGTH_SHORT).show();
+                                    Log.d("Pic Url Fetching", "failure");
+                                    Toast.makeText(getApplicationContext(), "Network error!\n Failed to upload pic.", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -421,15 +416,15 @@ public class MEResourceDocs extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(MEResourceDocs.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MEResourceDocs.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
         }
@@ -442,12 +437,10 @@ public class MEResourceDocs extends AppCompatActivity {
      */
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar =
-                 findViewById(R.id.collapsing_toolbar);
+                findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("");
-        AppBarLayout appBarLayout =  findViewById(R.id.appbar);
+        AppBarLayout appBarLayout = findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);
-
-
 
 
         // hiding & showing the title when toolbar expanded & collapsed
@@ -479,12 +472,10 @@ public class MEResourceDocs extends AppCompatActivity {
     }
 
 
-
     protected void onResume() {
         super.onResume();
 
     }
-
 
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -502,15 +493,28 @@ public class MEResourceDocs extends AppCompatActivity {
 
 
     public void showProgressDialog() {
+        if (isNetworkAvailable()) {
+            if (meDocProgressDialog == null) {
+                meDocProgressDialog = new ProgressDialog(this, R.style.MyAlertDialogStyle);
+                meDocProgressDialog.setMessage("Updating courses....");
+                meDocProgressDialog.setIndeterminate(true);
+                meDocProgressDialog.setCanceledOnTouchOutside(false);
+            }
 
-        if (meDocProgressDialog == null) {
-            meDocProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            meDocProgressDialog.setMessage("Updating courses....");
-            meDocProgressDialog.setIndeterminate(true);
-            meDocProgressDialog.setCanceledOnTouchOutside(false);
+            meDocProgressDialog.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hideProgressDialog();
+                    Snackbar.make(coordinatorLayout, "No Internet Connection", Snackbar.LENGTH_LONG).show();
+
+                }
+            }, 15000);
+        } else {
+            Snackbar.make(coordinatorLayout, "No Internet Connection", Snackbar.LENGTH_LONG).show();
+
         }
 
-        meDocProgressDialog.show();
     }
 
     public void hideProgressDialog() {
@@ -519,6 +523,11 @@ public class MEResourceDocs extends AppCompatActivity {
         }
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 
 
 }

@@ -1,11 +1,16 @@
 package com.iitdh.sonusourav.instigo.Complaints;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -17,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -48,6 +54,7 @@ public class ComplainRegister  extends AppCompatActivity
 
 
     private ComplainItemClass newComplain;
+    private RelativeLayout relativeLayout;
 
     String requesterName;
     String title;
@@ -69,7 +76,6 @@ public class ComplainRegister  extends AppCompatActivity
             onRestoreInstanceState(savedInstanceState);
         }
         initComplain();
-
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,12 +161,14 @@ public class ComplainRegister  extends AppCompatActivity
         complainDesc=findViewById(R.id.et_complain_desc);
         isPrivate=findViewById(R.id.complain_is_private);
         submitButton=findViewById(R.id.complain_submit);
+        relativeLayout =findViewById(R.id.complain_register_relative_layout);
 
         FirebaseAuth complainAuth = FirebaseAuth.getInstance();
         user = complainAuth.getCurrentUser();
         FirebaseDatabase complainInstance = FirebaseDatabase.getInstance();
         complainRootRef= complainInstance.getReference("Maintenance");
         complainRef=complainRootRef.child("Complaints").getRef();
+
 
     }
 
@@ -203,14 +211,28 @@ public class ComplainRegister  extends AppCompatActivity
     }
 
     public void showProgressDialog() {
+        if (isNetWorkAvailable()){
+            if (complainProgressDialog == null) {
+                complainProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
+                complainProgressDialog.setMessage("Registering your complaint...");
+                complainProgressDialog.setIndeterminate(true);
+            }
 
-        if (complainProgressDialog == null) {
-            complainProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            complainProgressDialog.setMessage("Registering your complaint...");
-            complainProgressDialog.setIndeterminate(true);
+            complainProgressDialog.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isNetWorkAvailable()){
+                        hideProgressDialog();
+                        Snackbar.make(relativeLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            },15000);
+        }else {
+            Snackbar.make(relativeLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
         }
 
-        complainProgressDialog.show();
+
     }
 
     public void hideProgressDialog() {
@@ -218,6 +240,12 @@ public class ComplainRegister  extends AppCompatActivity
             complainProgressDialog.dismiss();
         }
     }
+    private boolean isNetWorkAvailable(){
+        ConnectivityManager connectivityManager =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo= connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
+    }
+
 
 
 }

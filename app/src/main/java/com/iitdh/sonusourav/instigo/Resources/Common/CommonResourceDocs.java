@@ -2,17 +2,23 @@ package com.iitdh.sonusourav.instigo.Resources.Common;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -57,6 +63,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class CommonResourceDocs extends AppCompatActivity {
 
@@ -89,6 +96,7 @@ public class CommonResourceDocs extends AppCompatActivity {
     private  Dialog dialog;
     private Button addButton;
     private DocsClass newDoc;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +104,7 @@ public class CommonResourceDocs extends AppCompatActivity {
         setContentView(R.layout.doc_main);
 
         Toolbar toolbar =  findViewById(R.id.toolbar);
+        coordinatorLayout = findViewById(R.id.main_content);
         setSupportActionBar(toolbar);
 
         Bundle bundle=getIntent().getExtras();
@@ -501,21 +510,39 @@ public class CommonResourceDocs extends AppCompatActivity {
 
 
     public void showProgressDialog() {
+        if (isNetworkAvailable()){
+            if (csDocProgressDialog == null) {
+                csDocProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
+                csDocProgressDialog.setMessage("Updating courses....");
+                csDocProgressDialog.setIndeterminate(true);
+                csDocProgressDialog.setCanceledOnTouchOutside(false);
+            }
 
-        if (csDocProgressDialog == null) {
-            csDocProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            csDocProgressDialog.setMessage("Updating courses....");
-            csDocProgressDialog.setIndeterminate(true);
-            csDocProgressDialog.setCanceledOnTouchOutside(false);
+            csDocProgressDialog.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isNetworkAvailable()){
+                        hideProgressDialog();
+                        Snackbar.make(coordinatorLayout,"No Internet Connection", Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            },15000);
+        }else {
+            Snackbar.make(coordinatorLayout,"No Internet Connection", Snackbar.LENGTH_LONG).show();
         }
 
-        csDocProgressDialog.show();
     }
 
     public void hideProgressDialog() {
         if (csDocProgressDialog != null && csDocProgressDialog.isShowing()) {
             csDocProgressDialog.dismiss();
         }
+    }
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
     }
 
 

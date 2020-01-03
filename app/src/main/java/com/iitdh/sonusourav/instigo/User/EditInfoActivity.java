@@ -2,13 +2,18 @@ package com.iitdh.sonusourav.instigo.User;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -64,6 +70,7 @@ public class EditInfoActivity extends AppCompatActivity {
     private Calendar myCalendar;
     private  TextWatcher textWatcher;
     private  AdapterView.OnItemSelectedListener spinnerListener;
+    private LinearLayout linearLayout;
 
     private DatabaseReference infoUserRef;
     private FirebaseUser firebaseUser;
@@ -245,6 +252,7 @@ public class EditInfoActivity extends AppCompatActivity {
         infoGender=findViewById(R.id.pro_edit_gender);
         infoHostel=findViewById(R.id.pro_edit_hostel);
         infoSaveBtn=findViewById(R.id.pro_edit_save);
+        linearLayout=findViewById(R.id.activity_edit_info_linear_layout);
 
         myCalendar =Calendar.getInstance();
         infoSaveBtn.setEnabled(false);
@@ -499,21 +507,40 @@ public class EditInfoActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog() {
+        if (isNetworkAvailable()){
+            if (infoProgress == null) {
+                infoProgress = new ProgressDialog(this,R.style.MyAlertDialogStyle);
+                infoProgress.setMessage("Updating your profile ....");
+                infoProgress.setIndeterminate(true);
+                infoProgress.setCanceledOnTouchOutside(false);
+            }
 
-        if (infoProgress == null) {
-            infoProgress = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            infoProgress.setMessage("Updating your profile ....");
-            infoProgress.setIndeterminate(true);
-            infoProgress.setCanceledOnTouchOutside(false);
+            infoProgress.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isNetworkAvailable()){
+                        hideProgressDialog();
+                        Snackbar.make(linearLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            },15000);
+        }else {
+            Snackbar.make(linearLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
         }
 
-        infoProgress.show();
+
     }
 
     public void hideProgressDialog() {
         if (infoProgress != null && infoProgress.isShowing()) {
             infoProgress.dismiss();
         }
+    }
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
     }
 
 }
