@@ -1,16 +1,21 @@
 package com.iitdh.sonusourav.instigo.User;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -78,6 +83,7 @@ public class ProfileActivity extends AppCompatActivity
     private ProgressDialog profileDialog;
     private ImageView profilePic;
     private ImageView profileCoverPic;
+    private DrawerLayout drawerLayout;
 
 
 
@@ -100,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -447,15 +453,30 @@ public class ProfileActivity extends AppCompatActivity
     }
 
     public void showProgressDialog() {
+        if (isNetworkAvailable()){
+            if (profileDialog == null) {
+                profileDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
+                profileDialog.setMessage("Fetching details ....");
+                profileDialog.setIndeterminate(true);
+                profileDialog.setCanceledOnTouchOutside(false);
+            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isNetworkAvailable()){
+                        hideProgressDialog();
+                        Snackbar.make(drawerLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
 
-        if (profileDialog == null) {
-            profileDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            profileDialog.setMessage("Fetching details ....");
-            profileDialog.setIndeterminate(true);
-            profileDialog.setCanceledOnTouchOutside(false);
+                    }
+                }
+            },15000);
+            profileDialog.show();
+        }else {
+            Snackbar.make(drawerLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
+
         }
 
-        profileDialog.show();
+
     }
 
     public void hideProgressDialog() {
@@ -477,5 +498,10 @@ public class ProfileActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return CommonFunctions.navigationItemSelect(item, this);
+    }
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
     }
 }

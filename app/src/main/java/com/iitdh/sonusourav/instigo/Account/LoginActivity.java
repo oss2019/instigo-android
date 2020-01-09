@@ -1,10 +1,15 @@
 package com.iitdh.sonusourav.instigo.Account;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,6 +48,7 @@ import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.User.UserClass;
 import com.iitdh.sonusourav.instigo.Utils.PreferenceManager;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView loginLogo;
     private static final int RC_SIGN_IN = 234;
     private PreferenceManager loginPref;
+    private ConstraintLayout constraintLayout;
 
     //Tag for the logs optional
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -238,6 +245,7 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInButton=findViewById(R.id.button_google_login);
         forgotPass=findViewById(R.id.forgot_pass);
         signUp=findViewById(R.id.login_tv3);
+        constraintLayout = findViewById(R.id.activity_login_constraint_layout);
         loginEmail.setText("");
         loginPass.setText("");
         rememberMe.setChecked(false);
@@ -432,15 +440,29 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog() {
+        if (isNetworkAvailable()){
+            if (mProgressDialog == null) {
+                mProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
+                mProgressDialog.setMessage("Logging In ....");
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setCanceledOnTouchOutside(false);
+            }
 
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            mProgressDialog.setMessage("Logging In ....");
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isNetworkAvailable()){
+                        hideProgressDialog();
+                        Snackbar.make(constraintLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            },15000);
+        }else {
+            Snackbar.make(constraintLayout,"No Internet Connection", Snackbar.LENGTH_LONG).show();
         }
 
-        mProgressDialog.show();
+
     }
 
     public void hideProgressDialog() {
@@ -450,6 +472,11 @@ public class LoginActivity extends AppCompatActivity {
     }
     static String encodeUserEmail(String userEmail) {
         return userEmail.replace(".", ",");
+    }
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
     }
 
 }

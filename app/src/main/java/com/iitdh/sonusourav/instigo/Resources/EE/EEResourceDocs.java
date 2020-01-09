@@ -2,17 +2,23 @@ package com.iitdh.sonusourav.instigo.Resources.EE;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -89,6 +95,7 @@ public class EEResourceDocs extends AppCompatActivity {
     private  Dialog dialog;
     private Button addButton;
     private DocsClass newDoc;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +104,7 @@ public class EEResourceDocs extends AppCompatActivity {
 
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        coordinatorLayout = findViewById(R.id.main_content);
 
         Bundle bundle=getIntent().getExtras();
         assert bundle != null;
@@ -502,21 +510,41 @@ public class EEResourceDocs extends AppCompatActivity {
 
 
     public void showProgressDialog() {
+        if (isNetworkAvailable()){
+            if (eeDocProgressDialog == null) {
+                eeDocProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
+                eeDocProgressDialog.setMessage("Updating courses....");
+                eeDocProgressDialog.setIndeterminate(true);
+                eeDocProgressDialog.setCanceledOnTouchOutside(false);
+            }
 
-        if (eeDocProgressDialog == null) {
-            eeDocProgressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
-            eeDocProgressDialog.setMessage("Updating courses....");
-            eeDocProgressDialog.setIndeterminate(true);
-            eeDocProgressDialog.setCanceledOnTouchOutside(false);
+            eeDocProgressDialog.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isNetworkAvailable()){
+                        hideProgressDialog();
+                        Snackbar.make(coordinatorLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
+
+                    }
+                }
+            },15000);
+        }else {
+            Snackbar.make(coordinatorLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
         }
 
-        eeDocProgressDialog.show();
+
     }
 
     public void hideProgressDialog() {
         if (eeDocProgressDialog != null && eeDocProgressDialog.isShowing()) {
             eeDocProgressDialog.dismiss();
         }
+    }
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
     }
 
 
