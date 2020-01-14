@@ -90,7 +90,7 @@ public class FragmentFeedback extends Fragment {
         messFeedbackAdapter = new MessFeedbackAdapter(getActivity(), feedbackList);
         listView.setAdapter(messFeedbackAdapter);
 
-        messFeedbackRef.addValueEventListener(new ValueEventListener() {
+        messFeedbackRef.endAt(15).addValueEventListener(new ValueEventListener() {
 
 
             @Override
@@ -124,6 +124,7 @@ public class FragmentFeedback extends Fragment {
 
             }
         });
+        loadOtherDataFromFireBase(15);
 
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,6 +210,30 @@ public class FragmentFeedback extends Fragment {
     public void onResume() {
         super.onResume();
 
+    }
+    private void loadOtherDataFromFireBase(int startValue){
+        messFeedbackRef.startAt(15).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot snapshot :dataSnapshot.getChildren()){
+                        FeedbackUserClass feedback = snapshot.getValue(FeedbackUserClass.class);
+                        if (feedback != null){
+                            feedbackList.add(feedback);
+                        }
+                    }
+                    messFeedbackAdapter.notifyDataSetChanged();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+                }else {
+                    mShimmerViewContainer.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                mShimmerViewContainer.setVisibility(View.GONE);
+            }
+        });
     }
 
 }
