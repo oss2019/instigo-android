@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "336939768365",
+    "firebase_url": "https://instigo-project.firebaseio.com",
+    "project_id": "instigo-project",
+    "storage_bucket": "instigo-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336939768365:android:4f4508a532fedcc6",
+        "android_client_info": {
+          "package_name": "com.iitdh.sonusourav.instigo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "336939768365-8g49af9cmu13c86eaf901dj507iadr30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iitdh.sonusourav.instigo",
+            "certificate_hash": "542d0916c559208ea952342a643d33029a63c60d"
+          }
+        },
+        {
+          "client_id": "336939768365-citp6g9svmavoi62mei3nngubfdlqq9f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iitdh.sonusourav.instigo",
+            "certificate_hash": "b1f1e18e51b1790393538a9466572dec40ca0536"
+          }
+        },
+        {
+          "client_id": "336939768365-7ffjdq1k06fnfqht4vju5re7gnuhvt92.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA75DFxPTgGle-JjbY_qGS0NRWcx9_wrgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "336939768365-7ffjdq1k06fnfqht4vju5re7gnuhvt92.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
