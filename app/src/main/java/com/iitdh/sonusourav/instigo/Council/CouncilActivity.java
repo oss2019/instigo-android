@@ -34,17 +34,6 @@ public class CouncilActivity extends AppCompatActivity
     ArrayList<String> mCouncilName;
     ArrayList<Integer> mCouncilImage;
 
-    private Integer[] imageId = {
-            R.drawable.hostel_warden,
-            R.drawable.meeting,
-            R.drawable.sports,
-            R.drawable.office_worker,
-            R.drawable.food,
-            R.drawable.boy,
-            R.drawable.sport_junior,
-            R.drawable.music_girl,
-            R.drawable.emergency_call
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +41,6 @@ public class CouncilActivity extends AppCompatActivity
         setContentView(R.layout.activity_welcome);
 
         findViewById(R.id.include_council).setVisibility(View.VISIBLE);
-
 
         CommonFunctions.setUser(this);
 
@@ -71,16 +59,11 @@ public class CouncilActivity extends AppCompatActivity
 
         initCommitteeName();
         initArrayImage();
-
-
         recyclerView = findViewById(R.id.recycler_view_council);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         recyclerAdapter = new CouncilRecyclerAdapter(mCouncilName, mCouncilImage);
         recyclerView.setAdapter(recyclerAdapter);
-
-
-
     }
 
     private void initCommitteeName() {
@@ -109,7 +92,6 @@ public class CouncilActivity extends AppCompatActivity
         mCouncilImage.add(R.drawable.emergency_call);
     }
 
-
     private static long back_pressed=100;
 
     @Override
@@ -119,17 +101,13 @@ public class CouncilActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         startActivity(new Intent(CouncilActivity.this, HomeActivity.class));
-
     }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         return CommonFunctions.navigationItemSelect(item, this);
-
     }
-
 
 }
