@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,21 +21,18 @@ import com.iitdh.sonusourav.instigo.HomeActivity;
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.Utils.CommonFunctions;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
 public class CouncilActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
-    private LinearLayout wardens;
-    private LinearLayout genSecy;
-    private LinearLayout sportsSecy;
-    private LinearLayout culSecy;
-    private LinearLayout FrHostelSecy;
-    private LinearLayout FrHosMainSecy;
-    private LinearLayout FrMessSecy;
-    private LinearLayout FrSportsSecy;
-    private LinearLayout EmergencyContacts;
+    private RecyclerView recyclerView;
+    private CouncilRecyclerAdapter recyclerAdapter;
+    private int numberOfColumns = 2;
+    ArrayList<String> mCouncilName;
+    ArrayList<Integer> mCouncilImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +57,46 @@ public class CouncilActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        initCommitteeName();
+        initArrayImage();
 
-        councilInit();
 
-        wardens.setOnClickListener(this);
-        genSecy.setOnClickListener(this);
-        sportsSecy.setOnClickListener(this);
-        culSecy.setOnClickListener(this);
-        FrHosMainSecy.setOnClickListener(this);
-        FrHostelSecy.setOnClickListener(this);
-        FrMessSecy.setOnClickListener(this);
-        FrSportsSecy.setOnClickListener(this);
-        EmergencyContacts.setOnClickListener(this);
+        recyclerView = findViewById(R.id.recycler_view_council);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        recyclerAdapter = new CouncilRecyclerAdapter(mCouncilName, mCouncilImage);
+        recyclerView.setAdapter(recyclerAdapter);
+
 
 
     }
+
+    private void initCommitteeName() {
+        mCouncilName = new ArrayList<>();
+        mCouncilName.add("Hostel Warden");
+        mCouncilName.add("General Secretary");
+        mCouncilName.add("Sports Secretary");
+        mCouncilName.add("Hostel Secretary");
+        mCouncilName.add("Mess Committee");
+        mCouncilName.add("Junior Hostel Secretary");
+        mCouncilName.add("Junior Sports Secretary");
+        mCouncilName.add("Cultural Secretary");
+        mCouncilName.add("Maintenance");
+    }
+
+    private void initArrayImage(){
+        mCouncilName = new ArrayList<>();
+        mCouncilName.add("Hostel Warden");
+        mCouncilName.add("General Secretary");
+        mCouncilName.add("Sports Secretary");
+        mCouncilName.add("Hostel Secretary");
+        mCouncilName.add("Mess Committee");
+        mCouncilName.add("Junior Hostel Secretary");
+        mCouncilName.add("Junior Sports Secretary");
+        mCouncilName.add("Cultural Secretary");
+        mCouncilName.add("Maintenance");
+    }
+
 
     private static long back_pressed=100;
 
@@ -96,52 +120,4 @@ public class CouncilActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-            case R.id.wardens:
-                startActivity(new Intent(CouncilActivity.this,CouncilWarden.class));
-                break;
-            case R.id.gen_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilGenSecy.class));
-                break;
-            case R.id.sports_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilSportsSecy.class));
-                break;
-            case R.id.cul_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilCulturalSecy.class));
-                break;
-            case R.id.fr_hm_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilFHosMainSecy.class));
-                break;
-            case R.id.fr_hostel_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilFHostelSecy.class));
-                break;
-            case R.id.frs_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilFSportsSecy.class));
-                break;
-            case R.id.fr_mess_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilFMessSecy.class));
-                break;
-            case R.id.emergency_cont:
-                startActivity(new Intent(CouncilActivity.this,CouncilEmergency.class));
-                break;
-           default:
-               startActivity(new Intent(CouncilActivity.this,CouncilWarden.class));
-               break;
-        }
-    }
-
-    private void councilInit(){
-        wardens=findViewById(R.id.wardens);
-        genSecy=findViewById(R.id.gen_secy);
-        sportsSecy=findViewById(R.id.sports_secy);
-        culSecy=findViewById(R.id.cul_secy);
-        FrHostelSecy=findViewById(R.id.fr_hostel_secy);
-        FrHosMainSecy=findViewById(R.id.fr_hm_secy);
-        FrMessSecy=findViewById(R.id.fr_mess_secy);
-        FrSportsSecy=findViewById(R.id.frs_secy);
-        EmergencyContacts=findViewById(R.id.emergency_cont);
-    }
 }
