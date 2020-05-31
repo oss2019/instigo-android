@@ -45,7 +45,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iitdh.sonusourav.instigo.R;
-import com.iitdh.sonusourav.instigo.Utils.CommonFunctions;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

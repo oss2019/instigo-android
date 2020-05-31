@@ -29,11 +29,9 @@ package com.iitdh.sonusourav.instigo.Council;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,17 +39,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iitdh.sonusourav.instigo.Mess.FeedbackUserClass;
 import com.iitdh.sonusourav.instigo.R;
 
 import java.util.ArrayList;
-
-import static android.app.Activity.RESULT_OK;
 
 
 public class UltraPagerAdapter extends PagerAdapter {

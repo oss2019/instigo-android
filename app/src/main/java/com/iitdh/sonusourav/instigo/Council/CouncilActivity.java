@@ -12,18 +12,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.iitdh.sonusourav.instigo.Complaints.ComplainStatus;
-import com.iitdh.sonusourav.instigo.Complaints.ComplaintsActivity;
 import com.iitdh.sonusourav.instigo.HomeActivity;
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.Utils.CommonFunctions;
-
 import java.util.ArrayList;
 import java.util.Objects;
-
 
 public class CouncilActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -33,7 +26,6 @@ public class CouncilActivity extends AppCompatActivity
     private int numberOfColumns = 2;
     ArrayList<String> mCouncilName;
     ArrayList<Integer> mCouncilImage;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
