@@ -8,7 +8,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
     <ImageView
         android:id="@+id/council_picture"
         android:src="@drawable/sports"
@@ -16,7 +15,6 @@
         android:contentDescription="Council Item"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
-
 
     <TextView
         android:id="@+id/council_name"
@@ -34,7 +32,4 @@
         android:maxLines="3"
         android:layout_width="match_parent"
         android:layout_height="35dp"/>
-
-
-
 </LinearLayout>

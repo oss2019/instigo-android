@@ -16,12 +16,12 @@ import java.util.ArrayList;
 
 public class CouncilRecyclerAdapter extends RecyclerView.Adapter<CouncilRecyclerAdapter.ItemViewHolder> {
 
-    private ArrayList<String> mCouncilName;
-    private ArrayList<Integer> mCouncilImage;
+    private ArrayList<String> councilName;
+    private ArrayList<Integer> councilImage;
 
-    CouncilRecyclerAdapter(ArrayList<String> mCouncilName, ArrayList<Integer> mCouncilImage) {
-        this.mCouncilName = mCouncilName;
-        this.mCouncilImage = mCouncilImage;
+    CouncilRecyclerAdapter(ArrayList<String> councilName, ArrayList<Integer> councilImage) {
+        this.councilName = councilName;
+        this.councilImage = councilImage;
     }
 
     @NonNull
@@ -34,14 +34,14 @@ public class CouncilRecyclerAdapter extends RecyclerView.Adapter<CouncilRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.councilTextView.setText(mCouncilName.get(position));
-        holder.councilImageView.setImageResource(mCouncilImage.get(position));
+        holder.councilTextView.setText(councilName.get(position));
+        holder.councilImageView.setImageResource(councilImage.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (mCouncilName == null ) return 0;
-        return mCouncilName.size();
+        if (councilName == null ) return 0;
+        return councilName.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -52,13 +52,10 @@ public class CouncilRecyclerAdapter extends RecyclerView.Adapter<CouncilRecycler
 
         ItemViewHolder(View itemView) {
             super(itemView);
-
             councilTextView = itemView.findViewById(R.id.council_name);
             councilImageView = itemView.findViewById(R.id.council_picture);
             context = itemView.getContext();
-
             councilImageView.setOnClickListener(this);
-
         }
 
         @Override

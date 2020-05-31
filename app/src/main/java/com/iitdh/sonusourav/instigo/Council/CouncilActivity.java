@@ -24,8 +24,8 @@ public class CouncilActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private CouncilRecyclerAdapter recyclerAdapter;
     private int numberOfColumns = 2;
-    ArrayList<String> mCouncilName;
-    ArrayList<Integer> mCouncilImage;
+    ArrayList<String> councilName;
+    ArrayList<Integer> councilImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,34 +54,34 @@ public class CouncilActivity extends AppCompatActivity
         recyclerView = findViewById(R.id.recycler_view_council);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-        recyclerAdapter = new CouncilRecyclerAdapter(mCouncilName, mCouncilImage);
+        recyclerAdapter = new CouncilRecyclerAdapter(councilName, councilImage);
         recyclerView.setAdapter(recyclerAdapter);
     }
 
     private void initCommitteeName() {
-        mCouncilName = new ArrayList<>();
-        mCouncilName.add("Hostel Warden");
-        mCouncilName.add("General Secretary");
-        mCouncilName.add("Sports Secretary");
-        mCouncilName.add("Hostel Secretary");
-        mCouncilName.add("Mess Committee");
-        mCouncilName.add("Junior Hostel Secretary");
-        mCouncilName.add("Junior Sports Secretary");
-        mCouncilName.add("Cultural Secretary");
-        mCouncilName.add("Maintenance");
+        councilName = new ArrayList<>();
+        councilName.add("Hostel Warden");
+        councilName.add("General Secretary");
+        councilName.add("Sports Secretary");
+        councilName.add("Hostel Secretary");
+        councilName.add("Mess Committee");
+        councilName.add("Junior Hostel Secretary");
+        councilName.add("Junior Sports Secretary");
+        councilName.add("Cultural Secretary");
+        councilName.add("Maintenance");
     }
 
     private void initArrayImage(){
-        mCouncilImage = new ArrayList<Integer>();
-        mCouncilImage.add(R.drawable.hostel_warden);
-        mCouncilImage.add(R.drawable.meeting);
-        mCouncilImage.add(R.drawable.sports);
-        mCouncilImage.add(R.drawable.office_worker);
-        mCouncilImage.add(R.drawable.food);
-        mCouncilImage.add(R.drawable.boy);
-        mCouncilImage.add(R.drawable.sport_junior);
-        mCouncilImage.add(R.drawable.music_girl);
-        mCouncilImage.add(R.drawable.emergency_call);
+        councilImage = new ArrayList<Integer>();
+        councilImage.add(R.drawable.hostel_warden);
+        councilImage.add(R.drawable.meeting);
+        councilImage.add(R.drawable.sports);
+        councilImage.add(R.drawable.office_worker);
+        councilImage.add(R.drawable.food);
+        councilImage.add(R.drawable.boy);
+        councilImage.add(R.drawable.sport_junior);
+        councilImage.add(R.drawable.music_girl);
+        councilImage.add(R.drawable.emergency_call);
     }
 
     private static long back_pressed=100;
@@ -95,11 +95,9 @@ public class CouncilActivity extends AppCompatActivity
         startActivity(new Intent(CouncilActivity.this, HomeActivity.class));
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return CommonFunctions.navigationItemSelect(item, this);
     }
-
 }
