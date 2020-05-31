@@ -27,8 +27,7 @@ public class CouncilRecyclerAdapter extends RecyclerView.Adapter<CouncilRecycler
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.council_single_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.council_single_item, parent, false);
         return new ItemViewHolder(view);
     }
 
