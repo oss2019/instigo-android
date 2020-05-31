@@ -19,7 +19,7 @@ public class CouncilRecyclerAdapter extends RecyclerView.Adapter<CouncilRecycler
     private ArrayList<String> mCouncilName;
     private ArrayList<Integer> mCouncilImage;
 
-    public CouncilRecyclerAdapter(ArrayList<String> mCouncilName, ArrayList<Integer> mCouncilImage) {
+    CouncilRecyclerAdapter(ArrayList<String> mCouncilName, ArrayList<Integer> mCouncilImage) {
         this.mCouncilName = mCouncilName;
         this.mCouncilImage = mCouncilImage;
     }
