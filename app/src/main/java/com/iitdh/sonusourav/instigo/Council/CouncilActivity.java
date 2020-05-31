@@ -34,6 +34,18 @@ public class CouncilActivity extends AppCompatActivity
     ArrayList<String> mCouncilName;
     ArrayList<Integer> mCouncilImage;
 
+    private Integer[] imageId = {
+            R.drawable.hostel_warden,
+            R.drawable.meeting,
+            R.drawable.sports,
+            R.drawable.office_worker,
+            R.drawable.food,
+            R.drawable.boy,
+            R.drawable.sport_junior,
+            R.drawable.music_girl,
+            R.drawable.emergency_call
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,16 +97,16 @@ public class CouncilActivity extends AppCompatActivity
     }
 
     private void initArrayImage(){
-        mCouncilName = new ArrayList<>();
-        mCouncilName.add("Hostel Warden");
-        mCouncilName.add("General Secretary");
-        mCouncilName.add("Sports Secretary");
-        mCouncilName.add("Hostel Secretary");
-        mCouncilName.add("Mess Committee");
-        mCouncilName.add("Junior Hostel Secretary");
-        mCouncilName.add("Junior Sports Secretary");
-        mCouncilName.add("Cultural Secretary");
-        mCouncilName.add("Maintenance");
+        mCouncilImage = new ArrayList<Integer>();
+        mCouncilImage.add(R.drawable.hostel_warden);
+        mCouncilImage.add(R.drawable.meeting);
+        mCouncilImage.add(R.drawable.sports);
+        mCouncilImage.add(R.drawable.office_worker);
+        mCouncilImage.add(R.drawable.food);
+        mCouncilImage.add(R.drawable.boy);
+        mCouncilImage.add(R.drawable.sport_junior);
+        mCouncilImage.add(R.drawable.music_girl);
+        mCouncilImage.add(R.drawable.emergency_call);
     }
 
 
