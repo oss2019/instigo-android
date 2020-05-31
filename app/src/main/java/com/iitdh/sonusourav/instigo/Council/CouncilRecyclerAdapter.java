@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public class CouncilRecyclerAdapter extends RecyclerView.Adapter<CouncilRecyclerAdapter.ItemViewHolder> {
 
-    ArrayList<String> mCouncilName;
-    ArrayList<Integer> mCouncilImage;
+    private ArrayList<String> mCouncilName;
+    private ArrayList<Integer> mCouncilImage;
 
     public CouncilRecyclerAdapter(ArrayList<String> mCouncilName, ArrayList<Integer> mCouncilImage) {
         this.mCouncilName = mCouncilName;
@@ -44,13 +44,13 @@ public class CouncilRecyclerAdapter extends RecyclerView.Adapter<CouncilRecycler
         return mCouncilName.size();
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView councilTextView;
         private ImageView councilImageView;
         private Context context;
 
-        public ItemViewHolder(View itemView) {
+        ItemViewHolder(View itemView) {
             super(itemView);
 
             councilTextView = itemView.findViewById(R.id.council_name);
