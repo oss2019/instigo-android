@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -47,8 +48,8 @@ import com.iitdh.sonusourav.instigo.HomeActivity;
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.User.UserClass;
 import com.iitdh.sonusourav.instigo.Utils.PreferenceManager;
+
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

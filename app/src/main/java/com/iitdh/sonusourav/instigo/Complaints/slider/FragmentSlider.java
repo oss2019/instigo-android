@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.iitdh.sonusourav.instigo.R;
 import com.bumptech.glide.Glide;
+import com.iitdh.sonusourav.instigo.R;
 
 
 public class FragmentSlider extends Fragment {

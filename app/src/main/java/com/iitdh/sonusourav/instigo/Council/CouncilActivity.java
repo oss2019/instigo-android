@@ -8,32 +8,24 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.iitdh.sonusourav.instigo.Complaints.ComplainStatus;
-import com.iitdh.sonusourav.instigo.Complaints.ComplaintsActivity;
 import com.iitdh.sonusourav.instigo.HomeActivity;
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.Utils.CommonFunctions;
-
+import java.util.ArrayList;
 import java.util.Objects;
 
-
 public class CouncilActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
-    private LinearLayout wardens;
-    private LinearLayout genSecy;
-    private LinearLayout sportsSecy;
-    private LinearLayout culSecy;
-    private LinearLayout FrHostelSecy;
-    private LinearLayout FrHosMainSecy;
-    private LinearLayout FrMessSecy;
-    private LinearLayout FrSportsSecy;
-    private LinearLayout EmergencyContacts;
+    private RecyclerView recyclerView;
+    private CouncilRecyclerAdapter recyclerAdapter;
+    private int numberOfColumns = 2;
+    ArrayList<String> councilName;
+    ArrayList<Integer> councilImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +33,6 @@ public class CouncilActivity extends AppCompatActivity
         setContentView(R.layout.activity_welcome);
 
         findViewById(R.id.include_council).setVisibility(View.VISIBLE);
-
 
         CommonFunctions.setUser(this);
 
@@ -58,20 +49,39 @@ public class CouncilActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        initCommitteeName();
+        initArrayImage();
+        recyclerView = findViewById(R.id.recycler_view_council);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        recyclerAdapter = new CouncilRecyclerAdapter(councilName, councilImage);
+        recyclerView.setAdapter(recyclerAdapter);
+    }
 
-        councilInit();
+    private void initCommitteeName() {
+        councilName = new ArrayList<>();
+        councilName.add("Hostel Warden");
+        councilName.add("General Secretary");
+        councilName.add("Sports Secretary");
+        councilName.add("Hostel Secretary");
+        councilName.add("Mess Committee");
+        councilName.add("Junior Hostel Secretary");
+        councilName.add("Junior Sports Secretary");
+        councilName.add("Cultural Secretary");
+        councilName.add("Maintenance");
+    }
 
-        wardens.setOnClickListener(this);
-        genSecy.setOnClickListener(this);
-        sportsSecy.setOnClickListener(this);
-        culSecy.setOnClickListener(this);
-        FrHosMainSecy.setOnClickListener(this);
-        FrHostelSecy.setOnClickListener(this);
-        FrMessSecy.setOnClickListener(this);
-        FrSportsSecy.setOnClickListener(this);
-        EmergencyContacts.setOnClickListener(this);
-
-
+    private void initArrayImage(){
+        councilImage = new ArrayList<Integer>();
+        councilImage.add(R.drawable.hostel_warden);
+        councilImage.add(R.drawable.meeting);
+        councilImage.add(R.drawable.sports);
+        councilImage.add(R.drawable.office_worker);
+        councilImage.add(R.drawable.food);
+        councilImage.add(R.drawable.boy);
+        councilImage.add(R.drawable.sport_junior);
+        councilImage.add(R.drawable.music_girl);
+        councilImage.add(R.drawable.emergency_call);
     }
 
     private static long back_pressed=100;
@@ -83,65 +93,11 @@ public class CouncilActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         startActivity(new Intent(CouncilActivity.this, HomeActivity.class));
-
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         return CommonFunctions.navigationItemSelect(item, this);
-
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-            case R.id.wardens:
-                startActivity(new Intent(CouncilActivity.this,CouncilWarden.class));
-                break;
-            case R.id.gen_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilGenSecy.class));
-                break;
-            case R.id.sports_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilSportsSecy.class));
-                break;
-            case R.id.cul_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilCulturalSecy.class));
-                break;
-            case R.id.fr_hm_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilFHosMainSecy.class));
-                break;
-            case R.id.fr_hostel_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilFHostelSecy.class));
-                break;
-            case R.id.frs_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilFSportsSecy.class));
-                break;
-            case R.id.fr_mess_secy:
-                startActivity(new Intent(CouncilActivity.this,CouncilFMessSecy.class));
-                break;
-            case R.id.emergency_cont:
-                startActivity(new Intent(CouncilActivity.this,CouncilEmergency.class));
-                break;
-           default:
-               startActivity(new Intent(CouncilActivity.this,CouncilWarden.class));
-               break;
-        }
-    }
-
-    private void councilInit(){
-        wardens=findViewById(R.id.wardens);
-        genSecy=findViewById(R.id.gen_secy);
-        sportsSecy=findViewById(R.id.sports_secy);
-        culSecy=findViewById(R.id.cul_secy);
-        FrHostelSecy=findViewById(R.id.fr_hostel_secy);
-        FrHosMainSecy=findViewById(R.id.fr_hm_secy);
-        FrMessSecy=findViewById(R.id.fr_mess_secy);
-        FrSportsSecy=findViewById(R.id.frs_secy);
-        EmergencyContacts=findViewById(R.id.emergency_cont);
     }
 }

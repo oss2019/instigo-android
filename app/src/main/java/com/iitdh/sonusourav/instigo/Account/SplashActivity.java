@@ -7,25 +7,18 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.iitdh.sonusourav.instigo.HomeActivity;
-import com.iitdh.sonusourav.instigo.Mess.MessActivity;
 import com.iitdh.sonusourav.instigo.Mess.messnotification.AlarmBootReceiver;
 import com.iitdh.sonusourav.instigo.Mess.messnotification.BreakfastAlarmMaker;
 import com.iitdh.sonusourav.instigo.Mess.messnotification.DinnerAlarmMaker;
@@ -33,8 +26,6 @@ import com.iitdh.sonusourav.instigo.Mess.messnotification.LunchAlarmMaker;
 import com.iitdh.sonusourav.instigo.Mess.messnotification.TiffinAlarmMaker;
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.Utils.PreferenceManager;
-
-import java.util.Objects;
 
 
 

@@ -1,7 +1,6 @@
 package com.iitdh.sonusourav.instigo.Feedback;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.iitdh.sonusourav.instigo.R;
 import com.iitdh.sonusourav.instigo.Utils.CommonFunctions;
