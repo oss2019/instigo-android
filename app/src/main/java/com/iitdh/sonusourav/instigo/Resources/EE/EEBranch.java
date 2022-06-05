@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -241,7 +241,7 @@ public class EEBranch extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        android.support.v7.app.ActionBar FSportsActionBar = getSupportActionBar();
+        androidx.appcompat.app.ActionBar FSportsActionBar = getSupportActionBar();
         assert FSportsActionBar != null;
         FSportsActionBar.setHomeButtonEnabled(true);
         FSportsActionBar.setDisplayHomeAsUpEnabled(true);

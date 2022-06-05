@@ -7,7 +7,7 @@
     android:orientation="vertical"
     >
 
-  <android.support.design.widget.TextInputLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/til1"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -31,9 +31,9 @@
         android:textCursorDrawable="@drawable/bg_input_cursor"
         android:textSize="18sp"
         />
-  </android.support.design.widget.TextInputLayout>
+  </com.google.android.material.textfield.TextInputLayout>
 
-  <android.support.design.widget.TextInputLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/til2"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -57,10 +57,10 @@
         android:textCursorDrawable="@drawable/bg_input_cursor"
         android:textSize="18sp"
         />
-  </android.support.design.widget.TextInputLayout>
+  </com.google.android.material.textfield.TextInputLayout>
 
 
-  <android.support.design.widget.TextInputLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/til3"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -84,9 +84,9 @@
         android:textCursorDrawable="@drawable/bg_input_cursor"
         android:textSize="18sp"
         />
-  </android.support.design.widget.TextInputLayout>
+  </com.google.android.material.textfield.TextInputLayout>
 
-  <android.support.design.widget.TextInputLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/til4"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -111,9 +111,9 @@
         android:textCursorDrawable="@drawable/bg_input_cursor"
         android:textSize="18sp"
         />
-  </android.support.design.widget.TextInputLayout>
+  </com.google.android.material.textfield.TextInputLayout>
 
-  <android.support.design.widget.TextInputLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/til5"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
         android:textCursorDrawable="@drawable/bg_input_cursor"
         android:textSize="18sp"
         />
-  </android.support.design.widget.TextInputLayout>
+  </com.google.android.material.textfield.TextInputLayout>
 
   <Spinner
       android:id="@+id/pro_edit_gender"

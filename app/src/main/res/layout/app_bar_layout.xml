@@ -9,14 +9,14 @@
     tools:context=".Account.IntroScreen"
     >
 
-  <android.support.design.widget.AppBarLayout
+  <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:fitsSystemWindows="true"
       android:theme="@style/AppTheme"
       >
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_main"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
@@ -28,7 +28,7 @@
         />
 
 
-  </android.support.design.widget.AppBarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
   <include
       layout="@layout/home_screen"
       android:id="@+id/include_home"

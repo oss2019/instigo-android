@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "336939768365-ftvh098d8a0hf8v6kjj5l27mm5f7m78c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iitdh.sonusourav.instigo",
+            "certificate_hash": "5a6cca74e40b3d459f24bc769cabb0d0a28385ea"
+          }
+        },
+        {
           "client_id": "336939768365-7ffjdq1k06fnfqht4vju5re7gnuhvt92.apps.googleusercontent.com",
           "client_type": 3
         }

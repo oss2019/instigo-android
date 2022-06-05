@@ -7,10 +7,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -450,13 +450,10 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             mProgressDialog.show();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!isNetworkAvailable()){
-                        hideProgressDialog();
-                        Snackbar.make(constraintLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
-                    }
+            new Handler().postDelayed(() -> {
+                if (!isNetworkAvailable()){
+                    hideProgressDialog();
+                    Snackbar.make(constraintLayout,"No Internet Connection",Snackbar.LENGTH_LONG).show();
                 }
             },15000);
         }else {

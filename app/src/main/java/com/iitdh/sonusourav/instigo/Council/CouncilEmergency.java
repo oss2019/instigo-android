@@ -3,9 +3,9 @@ package com.iitdh.sonusourav.instigo.Council;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -85,7 +85,7 @@ public class CouncilEmergency extends AppCompatActivity
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        android.support.v7.app.ActionBar emergencyActionBar = getSupportActionBar();
+        androidx.appcompat.app.ActionBar emergencyActionBar = getSupportActionBar();
         assert emergencyActionBar != null;
         emergencyActionBar.setHomeButtonEnabled(true);
         emergencyActionBar.setDisplayHomeAsUpEnabled(true);
